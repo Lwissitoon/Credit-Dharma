@@ -32,7 +32,7 @@ namespace Credit_Dharma.Controllers
 
             //    if (Session.Admin)
             //    {
-            //        return View(await _context.Usuario.ToListAsync());
+            //       
             //    }
             //    else
             //    {
@@ -43,8 +43,7 @@ namespace Credit_Dharma.Controllers
             //{
             //    return RedirectToAction("Login");
             //}
-
-            return View();
+            return View(await _context.Usuario.ToListAsync());
         }
 
         // GET: Usuarios/Details/5

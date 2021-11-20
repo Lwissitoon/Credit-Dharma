@@ -39,28 +39,13 @@
     ======================================================== -->
 </head>
 <body>
-    @{ 
-        if (TempData["Loggedin"] == null)
-        {
-            TempData["Loggedin"] = "No";
-        }
-
-        if (TempData["Username"] == null)
-        {
-            TempData["Username"] = "Visitante";
-            TempData["Role"] = "N/A";
-        }
-
-        if (TempData["Admin"] == null)
-        {
-            TempData["Admin"] = "No";
-        }
-    }
+   
     <partial name="_Header" />
     <partial name="_Sidebar" />
     <main id="main" class="main">
+  
         @RenderBody()
-        </main>
+    </main>
         <partial name="_Footer" />
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
