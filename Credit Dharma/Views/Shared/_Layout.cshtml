@@ -1,10 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@{
+    TempData["AppName"] = "Credit Dharma";
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>@ViewData["Title"] - Credit_Dharma</title>
-    <title>Dashboard - NiceAdmin Bootstrap Template</title>
+    <title>@ViewData["Title"] - @TempData["AppName"]</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -36,7 +39,23 @@
     ======================================================== -->
 </head>
 <body>
+    @{ 
+        if (TempData["Loggedin"] == null)
+        {
+            TempData["Loggedin"] = "No";
+        }
 
+        if (TempData["Username"] == null)
+        {
+            TempData["Username"] = "Visitante";
+            TempData["Role"] = "N/A";
+        }
+
+        if (TempData["Admin"] == null)
+        {
+            TempData["Admin"] = "No";
+        }
+    }
     <partial name="_Header" />
     <partial name="_Sidebar" />
     <main id="main" class="main">

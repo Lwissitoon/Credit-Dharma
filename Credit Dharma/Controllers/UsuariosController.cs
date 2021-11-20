@@ -9,6 +9,7 @@ using Credit_Dharma.Data;
 using UserManager.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Credit_Dharma.Helper;
 
 namespace Credit_Dharma.Controllers
 {
@@ -24,27 +25,26 @@ namespace Credit_Dharma.Controllers
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-            if (TempData["Loggedin"]==null)
-            {
-                TempData["Loggedin"] = "No";
-            }
 
-            if (TempData["Loggedin"].ToString().ToUpper()=="SI" )
-            {
-               
-                if (TempData["Admin"].ToString().ToUpper() == "SI")
-                {
-                    return View(await _context.Usuario.ToListAsync());
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-            }
-            else
-            {
-                return RedirectToAction("Login");
-            }
+
+            //if (Session.Loggedin )
+            //{
+
+            //    if (Session.Admin)
+            //    {
+            //        return View(await _context.Usuario.ToListAsync());
+            //    }
+            //    else
+            //    {
+            //        return RedirectToAction("Index", "Home");
+            //    }
+            //}
+            //else
+            //{
+            //    return RedirectToAction("Login");
+            //}
+
+            return View();
         }
 
         // GET: Usuarios/Details/5
@@ -191,23 +191,21 @@ namespace Credit_Dharma.Controllers
             {
                 //  var role = _context.Usuario.FirstOrDefaultAsync(m => m.Username == Username);
                 TempData["Loggedin"] = "Si";
-                TempData["Username"] = usuario.Username;
-                TempData["Role"] = usuario.Role;
-                if (usuario.Role.ToString().ToUpper().Trim() == "Admin".ToUpper().Trim())
+                Session.Username= usuario.Username;
+                Session.Role = usuario.Role;
+                Session.Loggedin = true;
+                if (usuario.Role.ToUpper().Trim()=="Admin".ToUpper().Trim())
                 {
-                    TempData["Admin"] = "Si";
-                    return RedirectToAction("Index");
+                    Session.Admin = true;
                 }
-               else
-                {
-                    TempData["Admin"] = "No";
-                    return RedirectToAction("Index", "Home");
-                }
+                return RedirectToAction("Index", "Home");
+               
 
             }
             else
             {
                 TempData["Loggedin"] = "No";
+                Session.Loggedin = false;
                 return RedirectToAction("Login");
             }
         }
@@ -215,6 +213,16 @@ namespace Credit_Dharma.Controllers
         public async Task<IActionResult> Login()
         {
             return View();
+        }
+
+        public ActionResult Signout()
+        {
+            Session.Admin = false;
+            Session.Loggedin = false;
+            Session.Role = "N/A";
+            Session.Username = "Visitante";
+          
+            return RedirectToAction("Login");
         }
     }
 }
