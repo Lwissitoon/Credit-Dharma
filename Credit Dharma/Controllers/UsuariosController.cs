@@ -25,7 +25,14 @@ namespace Credit_Dharma.Controllers
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-
+            if (Session.Admin)
+            {
+                return View(await _context.Usuario.ToListAsync());
+            }
+            else
+            {
+                return RedirectToAction("Index","Home");
+            }
 
             //if (Session.Loggedin )
             //{
@@ -43,31 +50,48 @@ namespace Credit_Dharma.Controllers
             //{
             //    return RedirectToAction("Login");
             //}
-            return View(await _context.Usuario.ToListAsync());
+ 
         }
 
         // GET: Usuarios/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (Session.Admin)
             {
-                return NotFound();
-            }
 
-            var usuario = await _context.Usuario
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (usuario == null)
+
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var usuario = await _context.Usuario
+                    .FirstOrDefaultAsync(m => m.UserId == id);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                return View(usuario);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index");
             }
-
-            return View(usuario);
         }
 
         // GET: Usuarios/Create
         public IActionResult Create()
         {
+            if (Session.Admin)
+            {
             return View();
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+
         }
 
         // POST: Usuarios/Create
@@ -89,17 +113,26 @@ namespace Credit_Dharma.Controllers
         // GET: Usuarios/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (Session.Admin)
             {
-                return NotFound();
-            }
 
-            var usuario = await _context.Usuario.FindAsync(id);
-            if (usuario == null)
-            {
-                return NotFound();
+
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var usuario = await _context.Usuario.FindAsync(id);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+                return View(usuario);
             }
-            return View(usuario);
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         // POST: Usuarios/Edit/5
@@ -140,19 +173,26 @@ namespace Credit_Dharma.Controllers
         // GET: Usuarios/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (Session.Admin)
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var usuario = await _context.Usuario
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (usuario == null)
+                var usuario = await _context.Usuario
+                    .FirstOrDefaultAsync(m => m.UserId == id);
+                if (usuario == null)
+                {
+                    return NotFound();
+                }
+
+                return View(usuario);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Index");
             }
-
-            return View(usuario);
         }
 
         // POST: Usuarios/Delete/5
@@ -189,7 +229,7 @@ namespace Credit_Dharma.Controllers
             if (usuario.Username != null)
             {
                 //  var role = _context.Usuario.FirstOrDefaultAsync(m => m.Username == Username);
-                TempData["Loggedin"] = "Si";
+
                 Session.Username= usuario.Username;
                 Session.Role = usuario.Role;
                 Session.Loggedin = true;
@@ -203,7 +243,6 @@ namespace Credit_Dharma.Controllers
             }
             else
             {
-                TempData["Loggedin"] = "No";
                 Session.Loggedin = false;
                 return RedirectToAction("Login");
             }
