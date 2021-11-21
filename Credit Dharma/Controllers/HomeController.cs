@@ -1,4 +1,6 @@
 ﻿using Credit_Dharma.Models;
+using Credit_Dharma.Services.Fihogar;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,6 +22,8 @@ namespace Credit_Dharma.Controllers
 
         public IActionResult Index()
         {
+            // Response.WriteAsync(Token.GetToken()+" "+Token.GetUserConsent());
+          //  Services.Email.SendEmail();
             return View();
         }
 
