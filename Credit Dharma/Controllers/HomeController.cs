@@ -22,7 +22,8 @@ namespace Credit_Dharma.Controllers
 
         public IActionResult Index()
         {
-           // Response.WriteAsync(Token.GetToken()+" "+Token.GetUserConsent());
+            // Response.WriteAsync(Token.GetToken()+" "+Token.GetUserConsent());
+          //  Services.Email.SendEmail();
             return View();
         }
 
