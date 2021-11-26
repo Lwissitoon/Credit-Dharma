@@ -10,6 +10,7 @@ using UserManager.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Credit_Dharma.Helper;
+using Credit_Dharma.Models;
 
 namespace Credit_Dharma.Controllers
 {
@@ -85,7 +86,8 @@ namespace Credit_Dharma.Controllers
         {
             if (Session.Admin)
             {
-            return View();
+                
+                return View();
             }
             else
             {
@@ -226,24 +228,42 @@ namespace Credit_Dharma.Controllers
            var  usuario = login.FirstOrDefault(m => m.Username.ToUpper().Trim() == Username.ToUpper().Trim() && m.Password.ToUpper().Trim() == Password.ToUpper().Trim());
             //  .FirstOrDefault(m => m.Username.ToUpper().Trim() == Username.ToUpper().Trim() && m.Password.ToUpper().Trim() == Password.ToUpper().Trim()).Result;
             //Response.WriteAsync(usuario.First().Username+ usuario.First().Role);
-            if (usuario.Username != null)
-            {
-                //  var role = _context.Usuario.FirstOrDefaultAsync(m => m.Username == Username);
 
-                Session.Username= usuario.Username;
-                Session.Role = usuario.Role;
-                Session.Loggedin = true;
-                if (usuario.Role.ToUpper().Trim()=="Admin".ToUpper().Trim())
+            try
+            {
+                if (usuario == null)
                 {
-                    Session.Admin = true;
+                    return RedirectToAction("Login");
                 }
-                return RedirectToAction("Index", "Home");
-               
+                if (usuario.Username != null)
+                {
+                    //  var role = _context.Usuario.FirstOrDefaultAsync(m => m.Username == Username);
 
+                    Session.Username = usuario.Username;
+                    Session.Role = usuario.Role;
+                    Session.Loggedin = true;
+                    if (usuario.Role.ToUpper().Trim() == "Administrador".ToUpper().Trim())
+                    {
+                        Session.Admin = true;
+                    }
+                    return RedirectToAction("Index", "Home");
+
+
+
+                }
+
+                else if (usuario == null)
+                {
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                    Session.Loggedin = false;
+                    return RedirectToAction("Login");
+                }
             }
-            else
+            catch(NullReferenceException)
             {
-                Session.Loggedin = false;
                 return RedirectToAction("Login");
             }
         }

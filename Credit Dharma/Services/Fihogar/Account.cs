@@ -26,18 +26,23 @@ namespace Credit_Dharma.Services.Fihogar
 
             var a = JObject.Parse(response.Content);
             a.SelectToken("Amount");
-            return a.SelectToken("$.Data.Account..Balance..Amount.Amount").ToString();
+
+            /*
+             * $.Data..Account..Account..Identification
+             * $.Data..Account..Nickname
+             * $.Data..Balance..Amount..Amount
+             * $.Data..AccountSubType
+             * $.Data..Balance..Currency
+             * $.Data..Status
+             */
+
+            return a.SelectToken("$.Data..Account").ToString();
         }
 
 
-        public static decimal Sumaproductos()
+        public static void RefreshAccounts()
         {
-            var client = new RestClient("https://dummyjson.com/products");
-            var request = new RestRequest(Method.GET);
-            var response = client.Execute(request);
 
-            var a = JObject.Parse(response.Content);
-            return a.SelectToken("$.products").Sum(m => (decimal)m.SelectToken("..price"));
         }
     }
 }

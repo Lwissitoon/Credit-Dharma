@@ -30,7 +30,7 @@ namespace Credit_Dharma.Services.Fihogar
         }
 
 
-        public static decimal GetTransactionsTotalAccount(string account, string provider = "AB4WRD")
+        public static decimal GetTransactionsTotalAmountAccount(string account, string provider = "AB4WRD")
         {
             var client = ServiceCore.client;
             var request = new RestRequest("/manage-accounts/api/2.0/accounts/" + account + "/transactions?provider=" + provider, Method.GET);

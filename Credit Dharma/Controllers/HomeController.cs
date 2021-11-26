@@ -22,9 +22,10 @@ namespace Credit_Dharma.Controllers
 
         public IActionResult Index()
         {
-             //Response.WriteAsync(Token.GetToken()+" "+Token.GetUserConsent());
-            //  Services.Email.SendEmail();
-            //Response.WriteAsync(Transaction.GetTransactionsTotalAccount("1").ToString());
+            //Response.WriteAsync(Token.GetToken()+" "+Token.GetUserConsent());
+            //  Services.Email.SendEmail("100", "mariahenriquezdelgado@gmail.com", "Funciona");
+            //Response.WriteAsync(Transaction.GetTransactionsTotalAmountAccount("100").ToString());
+            Response.WriteAsync(Account.GetAccounts().ToString());
             return View();
         }
 

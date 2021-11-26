@@ -19,7 +19,7 @@ namespace Credit_Dharma.Services
                 
             };
 
-            smtpClient.Send("creditdharma@outlook.com", "luismateo9594@gmail.com", "Estatus de cuenta "+account, message);
+            smtpClient.Send("creditdharma@outlook.com", email, "Estatus de cuenta "+account, message);
         }
     }
 }

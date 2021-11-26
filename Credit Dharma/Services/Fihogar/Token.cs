@@ -56,8 +56,8 @@ namespace Credit_Dharma.Services.Fihogar
             request.AddHeader("Authorization", "Bearer " + GetToken());
 
             request.AddParameter("grant_type", "password");
-            request.AddParameter("username", "Dharma_1");
-            request.AddParameter("password", "Dharma_1");
+            request.AddParameter("username", "Dharma_3");
+            request.AddParameter("password", "Dharma_3");
 
 
             var response = client.Execute(request);
