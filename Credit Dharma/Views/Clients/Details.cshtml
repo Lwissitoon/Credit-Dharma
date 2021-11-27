@@ -171,7 +171,7 @@
                 </div>
             </div>
             @{ 
-                if (Double.Parse(@ViewData["Morosidad"].ToString())>0)
+                if (Model.PendingPayments>3)
                 {
 
 
