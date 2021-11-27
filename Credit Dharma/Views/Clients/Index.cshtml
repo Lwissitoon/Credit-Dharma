@@ -58,7 +58,7 @@
                                     </td>
 
                                     <td>
-                                        @(CustomFuctions.GetPaymentCount(DateTime.Parse(item.OpeningDate), DateTime.Now) - item.Payments)
+                                        @Html.DisplayFor(modelItem => item.PendingPayments)
                                     </td>
 
                                     @{

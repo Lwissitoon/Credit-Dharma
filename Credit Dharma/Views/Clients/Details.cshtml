@@ -58,25 +58,69 @@
             </div>
 
         </div>
-       
-
-        </div><!-- End Customers Card -->
 
 
+    </div><!-- End Loan Card -->
 
-        <section class="section">
-            <div class="row">
+    <div class="col-xxl-4 col-xl-12">
+
+        <div class="card info-card customers-card">
+            <div class="card-body">
+                <h5 class="card-title">Detalle del Prestamo</h5>
+
+                <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <div class="ps-3">
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.Status):</b> <span>@Html.DisplayFor(model => model.Status)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.Currency):</b> <span>@Html.DisplayFor(model => model.Currency)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.TotalAmount):</b> <span>@Html.DisplayFor(model => model.TotalAmount)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.Amount):</b> <span>@Html.DisplayFor(model => model.Amount)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.MonthlyPay):</b> <span>@Html.DisplayFor(model => model.MonthlyPay)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.OpeningDate):</b> <span>@Html.DisplayFor(model => model.OpeningDate)</span>
+                            </span>
+                            <br />
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+   
+            </div>
+
+        </div>
 
 
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Estado del Prestamo</h5>
+    </div><!-- End Loan Card -->
 
-                            <!-- Pie Chart -->
-                            <div id="MontoPendiente"></div>
+    <section class="section">
+        <div class="row">
 
-                            <script>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Estado del Prestamo</h5>
+
+                        <!-- Pie Chart -->
+                        <div id="MontoPendiente"></div>
+
+                        <script>
                 document.addEventListener("DOMContentLoaded", () => {
                   new ApexCharts(document.querySelector("#MontoPendiente"), {
                     series: @ViewData["Montos"],
@@ -90,22 +134,22 @@
                     labels: ['Monto Pagado', 'Monto Pendiente']
                   }).render();
                 });
-                            </script>
-                            <!-- End Pie Chart -->
+                        </script>
+                        <!-- End Pie Chart -->
 
-                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Cuotas de la Cuenta</h5>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cuotas de la Cuenta</h5>
 
-                            <!-- Pie Chart -->
-                            <div id="CuotasPendientes"></div>
+                        <!-- Pie Chart -->
+                        <div id="CuotasPendientes"></div>
 
-                            <script>
+                        <script>
                 document.addEventListener("DOMContentLoaded", () => {
                   new ApexCharts(document.querySelector("#CuotasPendientes"), {
                       series: @ViewData["Cuotas"],
@@ -120,22 +164,26 @@
                       labels: ['Cuotas Pagadas', 'Cuotas Pendientes'],
                   }).render();
                 });
-                            </script>
-                            <!-- End Pie Chart -->
+                        </script>
+                        <!-- End Pie Chart -->
 
-                        </div>
                     </div>
                 </div>
+            </div>
+            @{ 
+                if (Double.Parse(@ViewData["Morosidad"].ToString())>0)
+                {
 
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Morosidad</h5>
 
-                            <!-- Bar Chart -->
-                            <div id="barChart"></div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Morosidad</h5>
 
-                            <script>
+                        <!-- Bar Chart -->
+                        <div id="barChart"></div>
+
+                        <script>
                 document.addEventListener("DOMContentLoaded", () => {
                     new ApexCharts(document.querySelector("#barChart"), {
                         series: [{
@@ -155,17 +203,18 @@
                             enabled: false
                         },
                         xaxis: {
-                            categories: ['Morosidad'],
+                            categories: ['Morosidad (%)'],
                         }
                     }).render();
                 });
-                            </script>
-                            <!-- End Bar Chart -->
+                        </script>
+                        <!-- End Bar Chart -->
 
-                        </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
-    </div>
+                    }
+                }
+        </div>
+    </section>
+</div>

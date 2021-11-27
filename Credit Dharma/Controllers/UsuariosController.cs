@@ -246,7 +246,7 @@ namespace Credit_Dharma.Controllers
                     {
                         Session.Admin = true;
                     }
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Clients");
 
 
 

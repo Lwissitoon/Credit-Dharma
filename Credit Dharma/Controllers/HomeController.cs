@@ -38,8 +38,10 @@ namespace Credit_Dharma.Controllers
             foreach (var cliente in clientes)
             {
                 var pending = CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) - cliente.Payments;
-                 morosidad += (float)((cliente.MonthlyPay * pending) / (CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) * cliente.MonthlyPay));
-               
+                if (cliente.PendingPayments > 3)
+                {
+                    morosidad += (float)((cliente.MonthlyPay * cliente.PendingPayments) / cliente.TotalAmount) * 100;
+                }
             }
             ViewData["MorosidadGeneral"] = JsonSerializer.Serialize(new double[] { morosidad/clientes.ToList().Count });
             return View();

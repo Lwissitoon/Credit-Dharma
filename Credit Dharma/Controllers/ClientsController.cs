@@ -25,15 +25,21 @@ namespace Credit_Dharma.Views
         // GET: Clients
         public async Task<IActionResult> Index()
         {
-            var updatecontext = _context;
-           // await Account.RefreshAccountsAsync(updatecontext, updatecontext.Client);
+
+
          var clientes = await _context.Client.ToListAsync();
 
             clientes = clientes.FindAll(c => c.AccountSubType.ToUpper().Trim() == "Loan".ToUpper().Trim());
             // Response.WriteAsync(CustomFuctions.GetPaymentCount(DateTime.Parse( clientes.First().OpeningDate),DateTime.Now).ToString());
 
+
             if (Session.Loggedin)
             {
+                foreach (var cliente in clientes)
+                {
+                    cliente.PendingPayments = CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) - cliente.Payments;
+                    await _context.SaveChangesAsync();
+                }
                 return View(clientes);
             }
             else
@@ -56,6 +62,7 @@ namespace Credit_Dharma.Views
                     return NotFound();
                 }
 
+                
                 var client = await _context.Client
                     .FirstOrDefaultAsync(m => m.Identification == id);
 
@@ -70,7 +77,7 @@ namespace Credit_Dharma.Views
 
                 if (pending > 3)
                 {
-                    var morosidad = (float)((client.MonthlyPay * pending) / (CustomFuctions.GetPaymentCount(DateTime.Parse(client.OpeningDate), DateTime.Now) * client.MonthlyPay));
+                    var morosidad = (float)((client.MonthlyPay * client.PendingPayments) / client.TotalAmount)*100;
                     ViewData["Morosidad"] = JsonSerializer.Serialize(new float[] { morosidad });
 
                     // Response.WriteAsync(JsonSerializer.Serialize(new float[] { morosidad}).ToString());
@@ -235,7 +242,7 @@ namespace Credit_Dharma.Views
         {
             var cliente = await _context.Client.FirstOrDefaultAsync(m => m.Identification == id);
 
-           Email.SendEmail(cliente.Identification,cliente.Email,@"Tiene un total de "+ (CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) -cliente.PendingPayments)+" cuotas vencidas, favor pagar lo antes posible.");
+           Email.SendEmail(cliente.Identification,cliente.Email,@"Tiene un total de "+ cliente.PendingPayments+" cuotas vencidas, favor pagar lo antes posible.");
 
             return RedirectToAction("Index");
         }
