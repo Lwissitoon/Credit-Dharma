@@ -8,6 +8,8 @@ using Credit_Dharma.Models;
 using Credit_Dharma.Services.Fihogar;
 using Credit_Dharma.Helper;
 using System.Text.Json;
+using Credit_Dharma.Services;
+
 namespace Credit_Dharma.Views
 {
     public class ClientsController : Controller
@@ -233,7 +235,7 @@ namespace Credit_Dharma.Views
         {
             var cliente = await _context.Client.FirstOrDefaultAsync(m => m.Identification == id);
 
-          //  Email.SendEmail(cliente.Identification,cliente.Email,@"Tiene un total de "+ (CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) -cliente.PendingPayments)+" cuotas vencidas, favor pagar lo antes posible.");
+           Email.SendEmail(cliente.Identification,cliente.Email,@"Tiene un total de "+ (CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) -cliente.PendingPayments)+" cuotas vencidas, favor pagar lo antes posible.");
 
             return RedirectToAction("Index");
         }
