@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using UserManager.Models;
+using Credit_Dharma.Models;
 
 namespace Credit_Dharma.Data
 {
@@ -16,5 +17,7 @@ namespace Credit_Dharma.Data
         }
 
         public DbSet<UserManager.Models.Usuario> Usuario { get; set; }
+
+        public DbSet<Credit_Dharma.Models.Cliente> Client { get; set; }
     }
 }

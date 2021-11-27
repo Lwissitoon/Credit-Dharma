@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Credit_Dharma.Models.Cliente>
+@using Credit_Dharma.Helper;
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Refresh">Actualizar Clientes</a>
+</p>
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <table class="datatable table table-striped">
+                        <thead class="thead-dark">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Identification)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Nickname)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Amount)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TotalAmount)
+                                </th>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PendingPayments)
+                                </th>
+
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Identification)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Nickname)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Amount)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TotalAmount)
+                                    </td>
+
+                                    <td>
+                                        @(CustomFuctions.GetPaymentCount(DateTime.Parse(item.OpeningDate), DateTime.Now) - item.Payments)
+                                    </td>
+
+                                    @{
+                                        if (Session.Admin)
+                                        {
+                                            <td>
+                                                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Identification">Editar</a> |
+                                                <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Identification">Ver</a> |
+                                                <a class="btn btn-success" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Identification">Ver</a>|
+                                                <a class="btn btn-success" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+
+                                            </td>
+                                        }
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@{
+
+    @if (ViewBag.message != null)
+    {
+        <script>
+
+            alert("@ViewBag.message");
+        </script>
+        ViewBag.message = null;
+    }
+}

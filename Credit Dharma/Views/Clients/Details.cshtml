@@ -1,0 +1,167 @@
+﻿@model Credit_Dharma.Models.Cliente
+@using Credit_Dharma.Helper;
+@{
+    ViewData["Title"] = "Informacion Cliente";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>Cliente</h4>
+    <hr />
+
+    <!-- Customers Card -->
+    <div class="col-xxl-4 col-xl-12">
+
+        <div class="card info-card customers-card">
+            <div class="card-body">
+                <h5 class="card-title">Informacion personal</h5>
+
+                <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <div class="ps-3">
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.Name):</b> <span>@Html.DisplayFor(model => model.Name)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.Lastname):</b> <span>@Html.DisplayFor(model => model.Lastname)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.Email):</b> <span>@Html.DisplayFor(model => model.Email)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.PhoneNumber):</b> <span>@Html.DisplayFor(model => model.PhoneNumber)</span>
+                            </span>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+                <br />
+                @{
+                    if (Session.Admin)
+                    {
+                        <div>
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Identification">Editar</a>|
+                            <a class="btn btn-primary" asp-action="Index">Atras</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <a class="btn btn-primary" asp-action="Index">Atras</a>
+                        </div>
+                    }
+                }
+            </div>
+
+    </div>
+    <div>
+
+    </div><!-- End Customers Card -->
+    <section class="section">
+        <div class="row">
+
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Estado del Prestamo</h5>
+
+                        <!-- Pie Chart -->
+                        <div id="MontoPendiente"></div>
+
+                        <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  new ApexCharts(document.querySelector("#MontoPendiente"), {
+                    series: @ViewData["Montos"],
+                    chart: {
+                      height: 350,
+                      type: 'pie',
+                      toolbar: {
+                        show: true
+                      }
+                    },
+                    labels: ['Monto Pagado', 'Monto Pendiente']
+                  }).render();
+                });
+                        </script>
+                        <!-- End Pie Chart -->
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cuotas de la Cuenta</h5>
+
+                        <!-- Pie Chart -->
+                        <div id="CuotasPendientes"></div>
+
+                        <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  new ApexCharts(document.querySelector("#CuotasPendientes"), {
+                      series: @ViewData["Cuotas"],
+                          colors: ['#1A73E8', '#B32824'],
+                    chart: {
+                      height: 350,
+                        type: 'pie',
+                      toolbar: {
+                        show: true
+                      }
+                    },
+                      labels: ['Cuotas Pagadas', 'Cuotas Pendientes'],
+                  }).render();
+                });
+                        </script>
+                        <!-- End Pie Chart -->
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Morosidad</h5>
+
+                        <!-- Bar Chart -->
+                        <div id="barChart"></div>
+
+                        <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    new ApexCharts(document.querySelector("#barChart"), {
+                        series: [{
+                            data: @ViewData["Morosidad"]
+                        }],
+                        chart: {
+                            type: 'bar',
+                            height: 100
+                        },
+                        plotOptions: {
+                            bar: {
+                                borderRadius: 4,
+                                horizontal: true,
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        xaxis: {
+                            categories: ['Morosidad'],
+                        }
+                    }).render();
+                });
+                        </script>
+                        <!-- End Bar Chart -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
