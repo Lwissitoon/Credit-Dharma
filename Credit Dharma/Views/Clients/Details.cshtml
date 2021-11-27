@@ -57,23 +57,26 @@
                 }
             </div>
 
-    </div>
-    <div>
+        </div>
+       
 
-    </div><!-- End Customers Card -->
-    <section class="section">
-        <div class="row">
+        </div><!-- End Customers Card -->
 
 
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Estado del Prestamo</h5>
 
-                        <!-- Pie Chart -->
-                        <div id="MontoPendiente"></div>
+        <section class="section">
+            <div class="row">
 
-                        <script>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Estado del Prestamo</h5>
+
+                            <!-- Pie Chart -->
+                            <div id="MontoPendiente"></div>
+
+                            <script>
                 document.addEventListener("DOMContentLoaded", () => {
                   new ApexCharts(document.querySelector("#MontoPendiente"), {
                     series: @ViewData["Montos"],
@@ -87,22 +90,22 @@
                     labels: ['Monto Pagado', 'Monto Pendiente']
                   }).render();
                 });
-                        </script>
-                        <!-- End Pie Chart -->
+                            </script>
+                            <!-- End Pie Chart -->
 
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Cuotas de la Cuenta</h5>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Cuotas de la Cuenta</h5>
 
-                        <!-- Pie Chart -->
-                        <div id="CuotasPendientes"></div>
+                            <!-- Pie Chart -->
+                            <div id="CuotasPendientes"></div>
 
-                        <script>
+                            <script>
                 document.addEventListener("DOMContentLoaded", () => {
                   new ApexCharts(document.querySelector("#CuotasPendientes"), {
                       series: @ViewData["Cuotas"],
@@ -117,22 +120,22 @@
                       labels: ['Cuotas Pagadas', 'Cuotas Pendientes'],
                   }).render();
                 });
-                        </script>
-                        <!-- End Pie Chart -->
+                            </script>
+                            <!-- End Pie Chart -->
 
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Morosidad</h5>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Morosidad</h5>
 
-                        <!-- Bar Chart -->
-                        <div id="barChart"></div>
+                            <!-- Bar Chart -->
+                            <div id="barChart"></div>
 
-                        <script>
+                            <script>
                 document.addEventListener("DOMContentLoaded", () => {
                     new ApexCharts(document.querySelector("#barChart"), {
                         series: [{
@@ -156,12 +159,13 @@
                         }
                     }).render();
                 });
-                        </script>
-                        <!-- End Bar Chart -->
+                            </script>
+                            <!-- End Bar Chart -->
 
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </div>
+    </div>
