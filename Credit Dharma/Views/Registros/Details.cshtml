@@ -10,11 +10,15 @@
     <h4>Registro</h4>
     <hr />
     <!-- Registry Card -->
+    <div>
+        <a class="btn btn-primary" asp-action="Index">Atras</a>
+    </div>
+<br />
     <div class="col-xxl-4 col-xl-12">
 
         <div class="card info-card customers-card">
             <div class="card-body">
-                <h5 class="card-title">Informacion personal</h5>
+                <h5 class="card-title">Informacion de Registro</h5>
 
                 <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -32,23 +36,20 @@
                             </span>
                             <br />
                             <span>
-                                <b>  @Html.DisplayNameFor(model => model.NotificationDetails):</b> <br /><textarea readonly rows="1" cols="60" >@Html.DisplayFor(model => model.NotificationDetails)</textarea>
+                                <b>  @Html.DisplayNameFor(model => model.NotificationDetails):</b> <br /><textarea readonly rows="1" cols="60">@Html.DisplayFor(model => model.NotificationDetails)</textarea>
                             </span>
                             <br />
                         </div>
                     </div>
                 </div>
-                <br />
-                        <div>
-                            <a class="btn btn-primary" asp-action="Index">Atras</a>
-                        </div>
-            </div>
 
         </div>
 
 
     </div><!-- End Registry Card -->
-
+    <div>
+        <a class="btn btn-primary" asp-action="Index">Atras</a>
+    </div>
 
 
 

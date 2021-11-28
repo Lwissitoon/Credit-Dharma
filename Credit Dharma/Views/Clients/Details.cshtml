@@ -9,7 +9,10 @@
 <div>
     <h4>Cliente</h4>
     <hr />
-
+    <div>
+        <a class="btn btn-primary" asp-action="Index">Atras</a>
+    </div>
+    <br />
     <!-- Customers Card -->
     <div class="col-xxl-4 col-xl-12">
 
@@ -44,16 +47,10 @@
                     if (Session.Admin)
                     {
                         <div>
-                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Identification">Editar</a>|
-                            <a class="btn btn-primary" asp-action="Index">Atras</a>
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Identification">Editar</a>
                         </div>
                     }
-                    else
-                    {
-                        <div>
-                            <a class="btn btn-primary" asp-action="Index">Atras</a>
-                        </div>
-                    }
+
                 }
             </div>
 
@@ -100,7 +97,7 @@
                     </div>
                 </div>
                 <br />
-   
+
             </div>
 
         </div>
@@ -170,20 +167,20 @@
                     </div>
                 </div>
             </div>
-            @{ 
-                if (Model.PendingPayments>3)
+            @{
+                if (Model.PendingPayments > 3)
                 {
 
 
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Morosidad</h5>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Morosidad</h5>
 
-                        <!-- Bar Chart -->
-                        <div id="barChart"></div>
+                                <!-- Bar Chart -->
+                                <div id="barChart"></div>
 
-                        <script>
+                                <script>
                 document.addEventListener("DOMContentLoaded", () => {
                     new ApexCharts(document.querySelector("#barChart"), {
                         series: [{
@@ -207,14 +204,17 @@
                         }
                     }).render();
                 });
-                        </script>
-                        <!-- End Bar Chart -->
+                                </script>
+                                <!-- End Bar Chart -->
 
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-                    }
                 }
+            }
         </div>
     </section>
+    <div>
+        <a class="btn btn-primary" asp-action="Index">Atras</a>
+    </div>
 </div>

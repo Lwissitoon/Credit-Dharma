@@ -10,6 +10,10 @@
     <h4>Usuario</h4>
     <hr />
     <!-- Customers Card -->
+    <div>
+        <a class="btn btn-primary" asp-action="Index">Atras</a>
+    </div>
+    <br />
     <div class="col-xxl-4 col-xl-12">
 
         <div class="card info-card customers-card">
@@ -43,16 +47,10 @@
                     if (Session.Admin)
                     {
                         <div>
-                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.UserId">Editar</a>|
-                            <a class="btn btn-primary" asp-action="Index">Atras</a>
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.UserId">Editar</a>
                         </div>
                     }
-                    else
-                    {
-                        <div>
-                            <a class="btn btn-primary" asp-action="Index">Atras</a>
-                        </div>
-                    }
+
                 }
             </div>
 
@@ -61,7 +59,9 @@
 
     </div><!-- End Customers Card -->
 
-
+    <div>
+        <a class="btn btn-primary" asp-action="Index">Atras</a>
+    </div>
 
 
 
