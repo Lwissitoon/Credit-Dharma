@@ -28,9 +28,9 @@ namespace Credit_Dharma.Services.Fihogar
             return a["access_token"].ToString();
         }
 
-        public static string GetUserConsent()
+        public static string GetUserConsent(string provider = "AB4WRD")
         {
-            var client =new  RestClient(@"https://api.uat.4wrd.tech:8243/authorize/2.0/token?provider=AB4WRD");
+            var client =new  RestClient(@"https://api.uat.4wrd.tech:8243/authorize/2.0/token?provider="+provider);
 
             var request = new RestRequest(Method.POST);
              //request.AddParameter("provider", "AB4WRD");
@@ -56,8 +56,8 @@ namespace Credit_Dharma.Services.Fihogar
             request.AddHeader("Authorization", "Bearer " + GetToken());
 
             request.AddParameter("grant_type", "password");
-            request.AddParameter("username", "Dharma_1");
-            request.AddParameter("password", "Dharma_1");
+            request.AddParameter("username", "Dharma_3");
+            request.AddParameter("password", "Dharma_3");
 
 
             var response = client.Execute(request);

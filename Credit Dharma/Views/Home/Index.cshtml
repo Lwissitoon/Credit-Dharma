@@ -1,8 +1,45 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
+<section class="section dashboard">
+    <!-- Reports -->
+    <div class="col-12">
+        <div class="card">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+            <div class="card-body">
+                <h5 class="card-title">Morosidad General</h5>
+
+                        <!-- Bar Chart -->
+                        <div id="MorosidadGeneral"></div>
+
+                        <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    new ApexCharts(document.querySelector("#MorosidadGeneral"), {
+                        series: [{
+                            data: @ViewData["MorosidadGeneral"]
+                        }],
+                        chart: {
+                            type: 'bar',
+                            height: 250
+                        },
+                        plotOptions: {
+                            bar: {
+                                borderRadius: 4,
+                                horizontal: true,
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        xaxis: {
+                            categories: ['Morosidad General'],
+                        }
+                    }).render();
+                });
+                        </script>
+                        <!-- End Bar Chart -->
+
+                    </div>
+                </div>
+    </div><!-- End Reports -->
+</section>

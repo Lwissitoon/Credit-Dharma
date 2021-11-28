@@ -1,5 +1,5 @@
 ﻿@model UserManager.Models.Usuario
-
+@using Credit_Dharma.Helper;
 @{
     ViewData["Title"] = "Informacion Usuario";
 }
@@ -9,51 +9,61 @@
 <div>
     <h4>Usuario</h4>
     <hr />
+    <!-- Customers Card -->
+    <div class="col-xxl-4 col-xl-12">
+
+        <div class="card info-card customers-card">
+            <div class="card-body">
+                <h5 class="card-title">Informacion personal</h5>
+
+                <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <div class="ps-3">
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.Name):</b> <span>@Html.DisplayFor(model => model.Name)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.Lastname):</b> <span>@Html.DisplayFor(model => model.Lastname)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.Username):</b> <span>@Html.DisplayFor(model => model.Username)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.Role):</b> <span>@Html.DisplayFor(model => model.Role)</span>
+                            </span>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+                <br />
+                @{
+                    if (Session.Admin)
+                    {
+                        <div>
+                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.UserId">Editar</a>|
+                            <a class="btn btn-primary" asp-action="Index">Atras</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div>
+                            <a class="btn btn-primary" asp-action="Index">Atras</a>
+                        </div>
+                    }
+                }
+            </div>
+
+        </div>
 
 
-                <div class="card">
-                 <div class="card-body">
+    </div><!-- End Customers Card -->
 
-                                <dl class="row">
-                                    <dt class="col-sm-2">
-                                        @Html.DisplayNameFor(model => model.Username)
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.Username)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        @Html.DisplayNameFor(model => model.Name)
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.Name)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        @Html.DisplayNameFor(model => model.Lastname)
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.Lastname)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        @Html.DisplayNameFor(model => model.Role)
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.Role)
-                                    </dd>
-                                    <dt class="col-sm-2">
-                                        @Html.DisplayNameFor(model => model.Password)
-                                    </dt>
-                                    <dd class="col-sm-10">
-                                        @Html.DisplayFor(model => model.Password)
-                                    </dd>
-                                </dl>
-                            
-                            <div>
-                                <a asp-action="Edit" asp-route-id="@Model.UserId">Edit</a> |
-                                <a asp-action="Index">Back to List</a>
-                            </div>
-                     
-                            
-                   
+
+
+
+
 </div>
-     </div>
-    </div>
+  
