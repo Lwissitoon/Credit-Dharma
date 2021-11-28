@@ -56,9 +56,11 @@
                                         @Html.DisplayFor(modelItem => item.Password)
                                     </td>
                                     <td>
-                                        <a class="btn btn-warning"  asp-action="Edit" asp-route-id="@item.UserId">Editar</a> |
-                                        <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.UserId">Ver</a> |
-                                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.UserId">Borrar</a>
+                                        <div class="btn-group" role="group">
+                                        <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.UserId">Ver</a>
+                                        <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.UserId">Editar</a> 
+                                        <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.UserId">Borrar</a>
+                                            </div>
                                     </td>
                                 </tr>
                             }

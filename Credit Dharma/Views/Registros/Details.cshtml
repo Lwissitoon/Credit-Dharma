@@ -1,0 +1,57 @@
+﻿@model Credit_Dharma.Models.Registro
+
+@{
+    ViewData["Title"] = "Detalle Registro";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <h4>Registro</h4>
+    <hr />
+    <!-- Registry Card -->
+    <div class="col-xxl-4 col-xl-12">
+
+        <div class="card info-card customers-card">
+            <div class="card-body">
+                <h5 class="card-title">Informacion personal</h5>
+
+                <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <div class="ps-3">
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.NotificationDate):</b> <span>@Html.DisplayFor(model => model.NotificationDate)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.UserAccountNumber):</b> <span>@Html.DisplayFor(model => model.UserAccountNumber)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.Username):</b> <span>@Html.DisplayFor(model => model.Username)</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.NotificationDetails):</b> <br /><textarea readonly rows="1" cols="60" >@Html.DisplayFor(model => model.NotificationDetails)</textarea>
+                            </span>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+                <br />
+                        <div>
+                            <a class="btn btn-primary" asp-action="Index">Atras</a>
+                        </div>
+            </div>
+
+        </div>
+
+
+    </div><!-- End Registry Card -->
+
+
+
+
+
+</div>
+

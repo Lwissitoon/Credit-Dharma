@@ -9,8 +9,7 @@ namespace UserManager.Models
 {
     public class Usuario
     {
-        [Key]
-
+       [Key]
         public int UserId { get; set; }
         [DisplayName("Usuario")]
         [Required]

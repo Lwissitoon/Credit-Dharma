@@ -15,10 +15,9 @@ namespace Credit_Dharma.Views
     public class ClientsController : Controller
     {
         private readonly Credit_DharmaContext _context;
-
         public ClientsController(Credit_DharmaContext context)
         {
-
+            
             _context = context;
         }
 
@@ -71,11 +70,11 @@ namespace Credit_Dharma.Views
                 {
                     return NotFound();
                 }
-                var pending = CustomFuctions.GetPaymentCount(DateTime.Parse(client.OpeningDate), DateTime.Now) - client.Payments;
+            
                 ViewData["Montos"] = JsonSerializer.Serialize(new double[] { client.Amount, client.TotalAmount - client.Amount });
-                ViewData["Cuotas"] = JsonSerializer.Serialize(new double[] { client.Payments, pending });
+                ViewData["Cuotas"] = JsonSerializer.Serialize(new double[] { client.Payments, client.PendingPayments });
 
-                if (pending > 3)
+                if (client.PendingPayments > 3)
                 {
                     var morosidad = (float)((client.MonthlyPay * client.PendingPayments) / client.TotalAmount)*100;
                     ViewData["Morosidad"] = JsonSerializer.Serialize(new float[] { morosidad });
@@ -242,8 +241,9 @@ namespace Credit_Dharma.Views
         {
             var cliente = await _context.Client.FirstOrDefaultAsync(m => m.Identification == id);
 
-           Email.SendEmail(cliente.Identification,cliente.Email,@"Tiene un total de "+ cliente.PendingPayments+" cuotas vencidas, favor pagar lo antes posible.");
-
+             Email.SendEmail(cliente.Identification,cliente.Email,@"Tiene un total de "+ cliente.PendingPayments+" cuotas vencidas, favor pagar lo antes posible.");
+            _context.Registro.Add(new Registro() {NotificationDate=DateTime.Now.ToString(),Username=Session.Username,UserAccountNumber=cliente.Identification,NotificationDetails="Notificacion enviada via correo desde el sistema" });
+            await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
     }

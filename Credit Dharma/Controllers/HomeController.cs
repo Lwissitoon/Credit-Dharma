@@ -35,6 +35,7 @@ namespace Credit_Dharma.Controllers
           var clientes = await _context.Client.ToListAsync();
             clientes = clientes.FindAll(c => c.AccountSubType.ToUpper().Trim() == "Loan".ToUpper().Trim());
             var morosidad = 0.0;
+            double amount=0, totalAmount = 0;
             foreach (var cliente in clientes)
             {
                 var pending = CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) - cliente.Payments;
@@ -42,7 +43,10 @@ namespace Credit_Dharma.Controllers
                 {
                     morosidad += (float)((cliente.MonthlyPay * cliente.PendingPayments) / cliente.TotalAmount) * 100;
                 }
+                amount += cliente.Amount;
+                totalAmount += cliente.TotalAmount;
             }
+            ViewData["MontosGenerales"] = JsonSerializer.Serialize(new double[] { amount, totalAmount - amount });
             ViewData["MorosidadGeneral"] = JsonSerializer.Serialize(new double[] { morosidad/clientes.ToList().Count });
             return View();
         }

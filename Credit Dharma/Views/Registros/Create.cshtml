@@ -1,0 +1,56 @@
+﻿@model Credit_Dharma.Models.Registro
+@using Credit_Dharma.Helper;
+@{
+    ViewData["Title"] = "Crear Registro";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Registro</h4>
+<hr />
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="NotificationDate" class="control-label"></label>
+                        <input hidden readonly type="datetime" asp-for="NotificationDate" class="form-control"  value="@DateTime.Now"/>
+                        <span asp-validation-for="NotificationDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UserAccountNumber" class="control-label"></label>
+                        <input asp-for="UserAccountNumber" class="form-control" />
+                        <span asp-validation-for="UserAccountNumber" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="NotificationDetails" class="control-label"></label>
+                        <textarea rows="5" cols="60" asp-for="NotificationDetails" class="form-control">
+
+                        </textarea>
+                        <span asp-validation-for="NotificationDetails" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Username" class="control-label"></label>
+                        <input readonly asp-for="Username" value="@Session.Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <input type="submit" value="Registrar" class="btn btn-success" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br />
+        <div>
+            <a class="btn btn-primary" asp-action="Index">Atras</a>
+        </div>
+        </div>
+    </div>
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
