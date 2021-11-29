@@ -28,17 +28,21 @@ namespace Credit_Dharma.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
-            //  Response.WriteAsync(Token.GetToken()+" "+Token.GetUserConsent());
-            //  Services.Email.SendEmail("100", "mariahenriquezdelgado@gmail.com", "Funciona");
-          //    Response.WriteAsync(Transaction.GetTransactionsAccount("35081814").Count.ToString());
-          //    Response.WriteAsync(Account.GetAccounts().ToString());
+            
           var clientes = await _context.Client.ToListAsync();
             clientes = clientes.FindAll(c => c.AccountSubType.ToUpper().Trim() == "Loan".ToUpper().Trim());
             var morosidad = 0.0;
             double amount=0, totalAmount = 0;
             foreach (var cliente in clientes)
             {
-                var pending = CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) - cliente.Payments;
+                try
+                {
+                    cliente.PendingPayments = CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) - cliente.Payments;
+                }
+                catch (ArgumentNullException)
+                {
+                    cliente.PendingPayments = 0;
+                }
                 if (cliente.PendingPayments > 3)
                 {
                     morosidad += (float)((cliente.MonthlyPay * cliente.PendingPayments) / cliente.TotalAmount) * 100;
@@ -46,8 +50,16 @@ namespace Credit_Dharma.Controllers
                 amount += cliente.Amount;
                 totalAmount += cliente.TotalAmount;
             }
-            ViewData["MontosGenerales"] = JsonSerializer.Serialize(new double[] { amount, totalAmount - amount });
-            ViewData["MorosidadGeneral"] = JsonSerializer.Serialize(new double[] { morosidad/clientes.ToList().Count });
+            try
+            {
+                ViewData["MontosGenerales"] = JsonSerializer.Serialize(new double[] { amount, totalAmount - amount });
+                ViewData["MorosidadGeneral"] = JsonSerializer.Serialize(new double[] { morosidad / clientes.ToList().Count });
+            }
+            catch(ArgumentException)
+            {
+                ViewData["MontosGenerales"] = JsonSerializer.Serialize(new double[] {0});
+                ViewData["MorosidadGeneral"] = JsonSerializer.Serialize(new double[] { 0});
+            }
             return View();
         }
 

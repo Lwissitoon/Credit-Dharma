@@ -36,7 +36,14 @@ namespace Credit_Dharma.Views
             {
                 foreach (var cliente in clientes)
                 {
-                    cliente.PendingPayments = CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) - cliente.Payments;
+                    try
+                    {
+                        cliente.PendingPayments = CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) - cliente.Payments;
+                    }
+                    catch(ArgumentNullException)
+                    {
+                        cliente.PendingPayments = 0;
+                    }
                     await _context.SaveChangesAsync();
                 }
                 return View(clientes);
@@ -70,10 +77,17 @@ namespace Credit_Dharma.Views
                 {
                     return NotFound();
                 }
-            
-                ViewData["Montos"] = JsonSerializer.Serialize(new double[] { client.Amount, client.TotalAmount - client.Amount });
-                ViewData["Cuotas"] = JsonSerializer.Serialize(new double[] { client.Payments, client.PendingPayments });
 
+                try
+                {
+                    ViewData["Montos"] = JsonSerializer.Serialize(new double[] { client.Amount, client.TotalAmount - client.Amount });
+                    ViewData["Cuotas"] = JsonSerializer.Serialize(new double[] { client.Payments, client.PendingPayments });
+                }
+                catch(ArgumentNullException)
+                {
+                    ViewData["Montos"] = JsonSerializer.Serialize(new double[] {0});
+                    ViewData["Cuotas"] = JsonSerializer.Serialize(new double[] { 0});
+                }
                 if (client.PendingPayments > 3)
                 {
                     var morosidad = (float)((client.MonthlyPay * client.PendingPayments) / client.TotalAmount)*100;
