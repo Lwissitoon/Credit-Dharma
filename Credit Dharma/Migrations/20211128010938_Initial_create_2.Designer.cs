@@ -3,14 +3,16 @@ using Credit_Dharma.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Credit_Dharma.Migrations
 {
     [DbContext(typeof(Credit_DharmaContext))]
-    partial class Credit_DharmaContextModelSnapshot : ModelSnapshot
+    [Migration("20211128010938_Initial_create_2")]
+    partial class Initial_create_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

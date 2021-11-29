@@ -1,34 +1,34 @@
-﻿@model UserManager.Models.Usuario
-@using Credit_Dharma.Helper;
+﻿@model Credit_Dharma.Models.Registro
+
 @{
-    ViewData["Title"] = "Informacion Usuario";
+    ViewData["Title"] = "Detalle Registro";
 }
 
 <h1>@ViewData["Title"]</h1>
 
 <div>
-    <h4>Usuario</h4>
+    <h4>Registro</h4>
     <hr />
-    <!-- Customers Card -->
+    <!-- Registry Card -->
     <div>
         <a class="btn btn-primary" asp-action="Index">Atras</a>
     </div>
-    <br />
+<br />
     <div class="col-xxl-4 col-xl-12">
 
         <div class="card info-card customers-card">
             <div class="card-body">
-                <h5 class="card-title">Informacion personal</h5>
+                <h5 class="card-title">Informacion de Registro</h5>
 
                 <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                         <div class="ps-3">
                             <span>
-                                <b>  @Html.DisplayNameFor(model => model.Name):</b> <span>@Html.DisplayFor(model => model.Name)</span>
+                                <b>  @Html.DisplayNameFor(model => model.NotificationDate):</b> <span>@Html.DisplayFor(model => model.NotificationDate)</span>
                             </span>
                             <br />
                             <span>
-                                <b>  @Html.DisplayNameFor(model => model.Lastname):</b> <span>@Html.DisplayFor(model => model.Lastname)</span>
+                                <b>  @Html.DisplayNameFor(model => model.UserAccountNumber):</b> <span>@Html.DisplayFor(model => model.UserAccountNumber)</span>
                             </span>
                             <br />
                             <span>
@@ -36,34 +36,23 @@
                             </span>
                             <br />
                             <span>
-                                <b>  @Html.DisplayNameFor(model => model.Role):</b> <span>@Html.DisplayFor(model => model.Role)</span>
+                                <b>  @Html.DisplayNameFor(model => model.NotificationDetails):</b> <br /><textarea readonly rows="1" cols="60">@Html.DisplayFor(model => model.NotificationDetails)</textarea>
                             </span>
                             <br />
                         </div>
                     </div>
                 </div>
-                <br />
-                @{
-                    if (Session.Admin)
-                    {
-                        <div>
-                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.UserId">Editar</a>
-                        </div>
-                    }
-
-                }
-            </div>
 
         </div>
 
 
-    </div><!-- End Customers Card -->
-
+    </div><!-- End Registry Card -->
     <div>
         <a class="btn btn-primary" asp-action="Index">Atras</a>
     </div>
 
 
 
+
 </div>
-  
+

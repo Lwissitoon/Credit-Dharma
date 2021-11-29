@@ -19,5 +19,9 @@ namespace Credit_Dharma.Data
         public DbSet<UserManager.Models.Usuario> Usuario { get; set; }
 
         public DbSet<Credit_Dharma.Models.Cliente> Client { get; set; }
+
+        public DbSet<Credit_Dharma.Models.Registro> Registro { get; set; }
+
+
     }
 }
