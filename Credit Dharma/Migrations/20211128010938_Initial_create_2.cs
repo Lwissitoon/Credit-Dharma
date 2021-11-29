@@ -12,10 +12,10 @@ namespace Credit_Dharma.Migrations
                 {
                     IdNotification = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NotificationDate = table.Column<string>(nullable: true),
-                    UserAccountNumber = table.Column<string>(nullable: true),
-                    NotificationDetails = table.Column<string>(nullable: true),
-                    Username = table.Column<string>(nullable: true)
+                    NotificationDate = table.Column<string>(nullable: false),
+                    UserAccountNumber = table.Column<string>(nullable: false),
+                    NotificationDetails = table.Column<string>(nullable: false),
+                    Username = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {

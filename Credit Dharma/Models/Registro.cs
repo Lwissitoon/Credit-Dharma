@@ -12,12 +12,16 @@ namespace Credit_Dharma.Models
         [Key]
         [DisplayName("Numero de identificacion")]
         public int IdNotification { get; set; }
+        [Required]
         [DisplayName("Fecha Registro")]
         public string NotificationDate { get; set; }
+        [Required]
         [DisplayName("Cuenta del cliente")]
         public string UserAccountNumber { get; set; }
+        [Required]
         [DisplayName("Detalles")]
         public string NotificationDetails { get; set; }
+        [Required]
         [DisplayName("Realizada por")]
         public string Username { get; set; }
 
