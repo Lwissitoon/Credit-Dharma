@@ -68,8 +68,16 @@
                                                 <div class="btn-group" role="group">
                                                     <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Identification">Ver</a> <br />
                                                     <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.Identification">Editar</a> <br />
-                                                    <a class="btn btn-success btn-sm" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
-
+                                                    @{
+                                                        if (item.Email == null)
+                                                        {
+                                                            <a class="btn btn-success btn-sm disabled" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="btn btn-success btn-sm" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                        }
+                                                    }
                                                 </div>
                                             </td>
                                         }
@@ -78,7 +86,16 @@
                                             <td>
                                                 <div class="btn-group" role="group">
                                                     <a class="btn btn-warning btn-sm" asp-action="Details" asp-route-id="@item.Identification">Ver</a><br />
-                                                    <a class="btn btn-success btn-sm" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                    @{
+                                                        if (item.Email == null)
+                                                        {
+                                                            <a class="btn btn-success btn-sm disabled" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="btn btn-success btn-sm" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                        }
+                                                    }
                                                 </div>
                                             </td>
                                         }

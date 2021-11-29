@@ -255,9 +255,18 @@ namespace Credit_Dharma.Views
         {
             var cliente = await _context.Client.FirstOrDefaultAsync(m => m.Identification == id);
 
-             Email.SendEmail(cliente.Identification,cliente.Email,@"Tiene un total de "+ cliente.PendingPayments+" cuotas vencidas, favor pagar lo antes posible.");
-            _context.Registro.Add(new Registro() {NotificationDate=DateTime.Now.ToString(),Username=Session.Username,UserAccountNumber=cliente.Identification,NotificationDetails="Notificacion enviada via correo desde el sistema" });
-            await _context.SaveChangesAsync();
+            try
+            {
+                Email.SendEmail(cliente.Identification, cliente.Email, @"Tiene un total de " + cliente.PendingPayments + " cuotas vencidas, favor pagar lo antes posible.");
+                _context.Registro.Add(new Registro() { NotificationDate = DateTime.Now.ToString(), Username = Session.Username, UserAccountNumber = cliente.Identification, NotificationDetails = "Notificacion enviada via correo desde el sistema" });
+                await _context.SaveChangesAsync();
+            }
+            catch (ArgumentNullException)
+            {
+
+                return RedirectToAction("Index");
+            }
+
             return RedirectToAction("Index");
         }
     }
