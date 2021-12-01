@@ -11,7 +11,17 @@
     <hr />
     <div>
         <a class="btn btn-primary" asp-action="Index">Atras</a>
+        @{
+                    if (Session.Admin)
+                    {
+
+            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Identification">Asignar encargado</a>
+
+                    }
+
+        }
     </div>
+
     <br />
     <!-- Customers Card -->
     <div class="col-xxl-4 col-xl-12">
@@ -42,16 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <br />
-                @{
-                    if (Session.Admin)
-                    {
-                        <div>
-                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Identification">Editar</a>
-                        </div>
-                    }
-
-                }
+                
             </div>
 
         </div>
@@ -90,10 +91,6 @@
                             <br />
                             <span>
                                 <b>  @Html.DisplayNameFor(model => model.OpeningDate):</b> <span>@Html.DisplayFor(model => model.OpeningDate)</span>
-                            </span>
-                            <br />
-                            <span>
-                                <b>  @Html.DisplayNameFor(model => model.Assigned):</b> <span>@Html.DisplayFor(model => model.Assigned)</span>
                             </span>
                             <br />
                         </div>
@@ -175,15 +172,15 @@
                 {
 
 
-                    <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Morosidad</h5>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Morosidad</h5>
 
-                                <!-- Bar Chart -->
-                                <div id="barChart"></div>
+                            <!-- Bar Chart -->
+                            <div id="barChart"></div>
 
-                                <script>
+                            <script>
                 document.addEventListener("DOMContentLoaded", () => {
                     new ApexCharts(document.querySelector("#barChart"), {
                         series: [{
@@ -207,17 +204,26 @@
                         }
                     }).render();
                 });
-                                </script>
-                                <!-- End Bar Chart -->
+                            </script>
+                            <!-- End Bar Chart -->
 
-                            </div>
                         </div>
                     </div>
+                </div>
                 }
             }
         </div>
     </section>
     <div>
         <a class="btn btn-primary" asp-action="Index">Atras</a>
+        @{
+                    if (Session.Admin)
+                    {
+
+            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Identification">Asignar encargado</a>
+
+                    }
+
+        }
     </div>
 </div>

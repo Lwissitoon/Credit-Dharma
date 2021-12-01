@@ -12,6 +12,15 @@
     <!-- Customers Card -->
     <div>
         <a class="btn btn-primary" asp-action="Index">Atras</a>
+        @{
+            if (Session.Admin)
+            {
+
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.UserId">Editar</a>
+
+            }
+
+        }
     </div>
     <br />
     <div class="col-xxl-4 col-xl-12">
@@ -61,6 +70,15 @@
 
     <div>
         <a class="btn btn-primary" asp-action="Index">Atras</a>
+        @{
+            if (Session.Admin)
+            {
+
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.UserId">Editar</a>
+
+            }
+
+        }
     </div>
 
 

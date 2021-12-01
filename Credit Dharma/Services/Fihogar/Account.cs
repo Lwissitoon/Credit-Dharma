@@ -117,6 +117,7 @@ namespace Credit_Dharma.Services.Fihogar
                         updateClient.Nickname = cliente.Nickname;
                         updateClient.Amount = cliente.Amount;
                         updateClient.Payments = cliente.Payments;
+                        
                         await context.SaveChangesAsync();
                     }
                 }

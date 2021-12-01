@@ -6,9 +6,12 @@
 
 <h1>@ViewData["Title"]</h1>
 
+@if(Session.Admin)
+{
 <p>
     <a class="btn btn-primary" asp-action="Refresh">Refrescar Lista Clientes</a>
 </p>
+}
 
 <section class="section">
     <div class="row">
@@ -91,7 +94,7 @@
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Identification">Ver</a> <br />
-                                                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.Identification">Editar</a> <br />
+                                                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.Identification">Asignar</a> <br />
                                                 @{
                                                     if (item.Email == null)
                                                     {

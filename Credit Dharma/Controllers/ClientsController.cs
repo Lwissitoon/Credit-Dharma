@@ -105,7 +105,7 @@ namespace Credit_Dharma.Views
                 }
                 if (client.PendingPayments > 3)
                 {
-                    var morosidad = (float)((client.MonthlyPay * client.PendingPayments) / client.TotalAmount)*100;
+                    var morosidad = (float)((client.MonthlyPay * client.PendingPayments) / (client.TotalAmount-(client.Payments*client.MonthlyPay)) )*100;
                     ViewData["Morosidad"] = JsonSerializer.Serialize(new float[] { morosidad });
 
                     // Response.WriteAsync(JsonSerializer.Serialize(new float[] { morosidad}).ToString());
@@ -271,8 +271,10 @@ namespace Credit_Dharma.Views
 
         public async Task<ActionResult> RefreshAsync()
         {
-          await  Account.RefreshAccountsAsync(_context, _context.Client);
-
+            if (Session.Admin)
+            {
+                await Account.RefreshAccountsAsync(_context, _context.Client);
+            }
             return RedirectToAction("Index");
         }
 

@@ -45,7 +45,7 @@ namespace Credit_Dharma.Controllers
                 }
                 if (cliente.PendingPayments > 3)
                 {
-                    morosidad += (float)((cliente.MonthlyPay * cliente.PendingPayments) / cliente.TotalAmount) * 100;
+                    morosidad += (float)((cliente.MonthlyPay * cliente.PendingPayments) / (cliente.TotalAmount - (cliente.Payments * cliente.MonthlyPay))) * 100;
                 }
                 amount += cliente.Amount;
                 totalAmount += cliente.TotalAmount;
