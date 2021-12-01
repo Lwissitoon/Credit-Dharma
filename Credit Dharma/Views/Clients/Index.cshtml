@@ -23,9 +23,22 @@
                                 <th>
                                     @Html.DisplayNameFor(model => model.Identification)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Nickname)
-                                </th>
+                                @{
+                                    if (Session.Admin)
+                                    {
+
+
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Assigned)
+                                        </th>
+                                    }
+                                    else
+                                    {
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Nickname)
+                                        </th>
+                                    }
+                                }
                                 <th>
                                     @Html.DisplayNameFor(model => model.Amount)
                                 </th>
@@ -43,64 +56,75 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                <tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Identification)
+                                </td>
+                                @{ 
+                                    if (Session.Admin)
+                                    {
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.Identification)
+                                        @Html.DisplayFor(modelItem => item.Assigned)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Nickname)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Amount)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TotalAmount)
-                                    </td>
+                                    }
+                                else {
 
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.PendingPayments)
-                                    </td>
-
-                                    @{
-                                        if (Session.Admin)
-                                        {
-                                            <td>
-                                                <div class="btn-group" role="group">
-                                                    <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Identification">Ver</a> <br />
-                                                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.Identification">Editar</a> <br />
-                                                    @{
-                                                        if (item.Email == null)
-                                                        {
-                                                            <a class="btn btn-success btn-sm disabled" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
-                                                        }
-                                                        else
-                                                        {
-                                                            <a class="btn btn-success btn-sm" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
-                                                        }
-                                                    }
-                                                </div>
-                                            </td>
-                                        }
-                                        else
-                                        {
-                                            <td>
-                                                <div class="btn-group" role="group">
-                                                    <a class="btn btn-warning btn-sm" asp-action="Details" asp-route-id="@item.Identification">Ver</a><br />
-                                                    @{
-                                                        if (item.Email == null)
-                                                        {
-                                                            <a class="btn btn-success btn-sm disabled" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
-                                                        }
-                                                        else
-                                                        {
-                                                            <a class="btn btn-success btn-sm" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
-                                                        }
-                                                    }
-                                                </div>
-                                            </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nickname)
+                                </td>
                                         }
                                     }
-                                </tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Amount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalAmount)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PendingPayments)
+                                </td>
+
+                                @{
+                                    if (Session.Admin)
+                                    {
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Identification">Ver</a> <br />
+                                                <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.Identification">Editar</a> <br />
+                                                @{
+                                                    if (item.Email == null)
+                                                    {
+                                                        <a class="btn btn-success btn-sm disabled" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-success btn-sm" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                    }
+                                                }
+                                            </div>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-route-id="@item.Identification">Ver</a><br />
+                                                @{
+                                                    if (item.Email == null)
+                                                    {
+                                                        <a class="btn btn-success btn-sm disabled" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="btn btn-success btn-sm" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                    }
+                                                }
+                                            </div>
+                                        </td>
+                                    }
+                                }
+                            </tr>
                             }
                         </tbody>
                     </table>

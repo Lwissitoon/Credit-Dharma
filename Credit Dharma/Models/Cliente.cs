@@ -44,5 +44,7 @@ namespace Credit_Dharma.Models
 
         public double MonthlyPay { get; set; }
 
+        [DisplayName("Asignado A")]
+        public string Assigned { get; set; }
     }
 }

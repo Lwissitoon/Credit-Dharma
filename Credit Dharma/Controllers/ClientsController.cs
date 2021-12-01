@@ -9,6 +9,7 @@ using Credit_Dharma.Services.Fihogar;
 using Credit_Dharma.Helper;
 using System.Text.Json;
 using Credit_Dharma.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Credit_Dharma.Views
 {
@@ -34,11 +35,13 @@ namespace Credit_Dharma.Views
 
             if (Session.Loggedin)
             {
+              
                 foreach (var cliente in clientes)
                 {
                     try
                     {
                         cliente.PendingPayments = CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) - cliente.Payments;
+
                     }
                     catch(ArgumentNullException)
                     {
@@ -46,7 +49,19 @@ namespace Credit_Dharma.Views
                     }
                     await _context.SaveChangesAsync();
                 }
-                return View(clientes);
+                if (Session.Admin)
+                {
+                    clientes = clientes.FindAll(c => c.AccountSubType.ToUpper().Trim() == "Loan".ToUpper().Trim());
+                    return View(clientes);
+                }
+                else
+                {
+
+
+                 return View( _context.Client.FromSqlRaw("SELECT * FROM[dbo].[Client] Where[Assigned] = '"+Session.Username+"'"));
+                        
+                    
+                }
             }
             else
             {
@@ -142,7 +157,17 @@ namespace Credit_Dharma.Views
         {
             if (Session.Admin)
             {
+                var usuariosLista = (from Usuario in _context.Usuario
+                                   select new SelectListItem()
+                                   {
+                                       Text = Usuario.Username,
+                                       Value = Usuario.Username
+                                   }).ToList();
 
+
+
+
+                ViewBag.usuarios = usuariosLista;
 
                 if (id == null)
                 {
@@ -168,7 +193,7 @@ namespace Credit_Dharma.Views
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Identification,Status,Currency,AccountSubType,Nickname,OpeningDate,Amount,Name,Lastname,Email,PhoneNumber,TotalAmount,Payments,PendingPayments,MonthlyPay")] Cliente client)
+        public async Task<IActionResult> Edit(string id, [Bind("Identification,Status,Currency,AccountSubType,Nickname,OpeningDate,Amount,Name,Lastname,Email,PhoneNumber,TotalAmount,Payments,PendingPayments,MonthlyPay,Assigned")] Cliente client)
         {
             if (id != client.Identification)
             {
