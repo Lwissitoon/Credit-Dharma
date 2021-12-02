@@ -99,17 +99,26 @@ namespace Credit_Dharma.Views
                     ViewData["Cuotas"] = JsonSerializer.Serialize(new double[] { client.Payments, client.PendingPayments });
                 }
                 catch(ArgumentNullException)
-                {
+                { 
                     ViewData["Montos"] = JsonSerializer.Serialize(new double[] {0});
                     ViewData["Cuotas"] = JsonSerializer.Serialize(new double[] { 0});
                 }
+
+
+
+
+
                 if (client.PendingPayments > 3)
                 {
                     var morosidad = (float)((client.MonthlyPay * client.PendingPayments) / (client.TotalAmount-(client.Payments*client.MonthlyPay)) )*100;
-                    ViewData["Morosidad"] = JsonSerializer.Serialize(new float[] { morosidad });
+                    ViewData["Morosidad"] = JsonSerializer.Serialize(new double[] {CustomFuctions.GetMorosidad(_context.Client.ToList(),client) });
 
                     // Response.WriteAsync(JsonSerializer.Serialize(new float[] { morosidad}).ToString());
                 }
+
+
+
+
 
                 else
                 {

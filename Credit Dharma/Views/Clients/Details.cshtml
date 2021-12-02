@@ -64,7 +64,7 @@
 
         <div class="card info-card customers-card">
             <div class="card-body">
-                <h5 class="card-title">Detalle del Prestamo</h5>
+                <h5 class="card-title">Detalle del Prestamo (@(Model.Nickname))</h5>
 
                 <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -86,11 +86,23 @@
                             </span>
                             <br />
                             <span>
+                                <b>  Saldo:</b> <span>@(Model.TotalAmount-Model.Amount)</span>
+                            </span>
+                            <br />
+                            <span>
                                 <b>  @Html.DisplayNameFor(model => model.MonthlyPay):</b> <span>@Html.DisplayFor(model => model.MonthlyPay)</span>
                             </span>
                             <br />
                             <span>
-                                <b>  @Html.DisplayNameFor(model => model.OpeningDate):</b> <span>@Html.DisplayFor(model => model.OpeningDate)</span>
+                                <b>  @Html.DisplayNameFor(model => model.OpeningDate):</b> <span>@(DateTime.Parse(Model.OpeningDate).ToShortDateString())</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  Proxima Pago:</b> <span>@(DateTime.Parse(Model.OpeningDate).AddMonths(CustomFuctions.GetPaymentCount(DateTime.Parse( Model.OpeningDate),DateTime.Now)).ToShortDateString())</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  Vence:</b> <span>@(DateTime.Parse(Model.OpeningDate).AddMonths(Convert.ToInt32(Model.TotalAmount/Model.MonthlyPay)).ToShortDateString())</span>
                             </span>
                             <br />
                         </div>
@@ -158,7 +170,7 @@
                         show: true
                       }
                     },
-                      labels: ['Cuotas Pagadas', 'Cuotas Pendientes'],
+                      labels: ['Cuotas Pagadas', 'Cuotas Generadas'],
                   }).render();
                 });
                         </script>

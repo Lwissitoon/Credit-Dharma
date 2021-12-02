@@ -35,10 +35,10 @@ namespace Credit_Dharma.Models
         public string PhoneNumber { get; set; }
         [DisplayName("Monto total")]
         public double TotalAmount { get; set; }
-        [DisplayName("Cuotas pagadas")]
+        [DisplayName("Cuotas Pagadas")]
 
         public int Payments { get; set; }
-        [DisplayName("Cuotas Pendientes")]
+        [DisplayName("Cuotas Generadas")]
         public int PendingPayments { get; set; }
         [DisplayName("Cuota Mensual")]
 
