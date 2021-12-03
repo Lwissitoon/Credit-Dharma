@@ -94,11 +94,15 @@
                             </span>
                             <br />
                             <span>
+                                <b>  Cuotas Generadas:</b> <span>@(CustomFuctions.GetPaymentCount( DateTime.Parse(Model.OpeningDate),DateTime.Now))</span>
+                            </span>
+                            <br />
+                            <span>
                                 <b>  @Html.DisplayNameFor(model => model.OpeningDate):</b> <span>@(DateTime.Parse(Model.OpeningDate).ToShortDateString())</span>
                             </span>
                             <br />
                             <span>
-                                <b>  Proxima Pago:</b> <span>@(DateTime.Parse(Model.OpeningDate).AddMonths(CustomFuctions.GetPaymentCount(DateTime.Parse( Model.OpeningDate),DateTime.Now)).ToShortDateString())</span>
+                                <b>  Proximo Pago:</b> <span>@(DateTime.Parse(Model.OpeningDate).AddMonths(CustomFuctions.GetPaymentCount(DateTime.Parse( Model.OpeningDate),DateTime.Now)).ToShortDateString())</span>
                             </span>
                             <br />
                             <span>
@@ -170,7 +174,7 @@
                         show: true
                       }
                     },
-                      labels: ['Cuotas Pagadas', 'Cuotas Generadas'],
+                      labels: ['Cuotas Pagadas', 'Cuotas Pendientes'],
                   }).render();
                 });
                         </script>

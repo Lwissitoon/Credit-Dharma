@@ -85,13 +85,15 @@ namespace Credit_Dharma.Services.Fihogar
                 clientes.Add(new Cliente()
                 {
                     Identification = (string)id.ToList().ElementAt(i),
-                    Status= (string)status.ToList().ElementAt(i),
+                    OpeningDate= (string)nickname.ToList().ElementAt(i),
+                    Status = (string)status.ToList().ElementAt(i),
                     Currency = (string)currency.ToList().ElementAt(i),
                     AccountSubType = (string)accountSubType.ToList().ElementAt(i),
                     Nickname = (string)nickname.ToList().ElementAt(i),
                     Amount = (double)amount.ToList().ElementAt(i),
-                    Payments = Transaction.GetTransactionsAccount((string)id.ToList().ElementAt(i).ToString()).Count
+                    Payments = Transaction.GetTransactionsAccount((string)id.ToList().ElementAt(i).ToString()).Count,
 
+                    
                 }) ; 
             }
 
@@ -117,6 +119,7 @@ namespace Credit_Dharma.Services.Fihogar
                         updateClient.Nickname = cliente.Nickname;
                         updateClient.Amount = cliente.Amount;
                         updateClient.Payments = cliente.Payments;
+                        updateClient.OpeningDate = cliente.OpeningDate;
                         
                         await context.SaveChangesAsync();
                     }

@@ -10,6 +10,7 @@ using Credit_Dharma.Helper;
 using System.Text.Json;
 using Credit_Dharma.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text;
 
 namespace Credit_Dharma.Views
 {
@@ -304,6 +305,62 @@ namespace Credit_Dharma.Views
             }
 
             return RedirectToAction("Index");
+        }
+
+
+        public ActionResult ExportToCsv()
+        {
+            var clientes = _context.Client.ToList();
+            clientes = clientes.FindAll(c => c.AccountSubType.ToUpper().Trim() == "Loan".ToUpper().Trim());
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Cuenta");
+            sb.Append(",");
+            sb.Append("Estatus");
+            sb.Append(",");
+            sb.Append("Moneda");
+            sb.Append(",");
+            sb.Append("Descripcion");
+            sb.Append(",");
+            sb.Append("Fecha Apertura");
+            sb.Append(",");
+            sb.Append("Saldo");
+            sb.Append(",");
+            sb.Append("Saldo Pendiente");
+            sb.Append(",");
+            sb.Append("Cuota Mensual");
+            sb.Append(",");
+            sb.Append("Cuotas Pendientes");
+            sb.Append(",");
+            sb.Append("Cuotas Pagadas");
+            sb.Append(",");
+            sb.Append("Cuotas Generadas");
+            sb.AppendLine();
+            foreach (var cliente in clientes)
+            {
+                sb.Append(cliente.Identification);
+                sb.Append(",");
+                sb.Append(cliente.Status);
+                sb.Append(",");
+                sb.Append(cliente.Currency);
+                sb.Append(",");
+                sb.Append(cliente.Nickname);
+                sb.Append(",");
+                sb.Append(cliente.OpeningDate);
+                sb.Append(",");
+                sb.Append(cliente.TotalAmount-cliente.Amount);
+                sb.Append(",");
+                sb.Append(cliente.PendingPayments*cliente.MonthlyPay);
+                sb.Append(",");
+                sb.Append(cliente.MonthlyPay);
+                sb.Append(",");
+                sb.Append(cliente.PendingPayments);
+                sb.Append(",");
+                sb.Append(cliente.Payments);
+                sb.Append(",");
+                sb.Append(cliente.Payments+cliente.PendingPayments);
+                sb.AppendLine();
+            }
+            return File(Encoding.ASCII.GetBytes(sb.ToString()), "text/csv", DateTime.Now.Date.ToString("dd-MM-yyyy")+"_clientes.csv");
         }
     }
 }

@@ -6,12 +6,15 @@
 
 <h1>@ViewData["Title"]</h1>
 
-@if(Session.Admin)
-{
+
 <p>
-    <a class="btn btn-primary" asp-action="Refresh">Refrescar Lista Clientes</a>
+    @if (Session.Admin)
+    {
+        <a class="btn btn-primary btn-sm" asp-action="Refresh">Refrescar Lista Clientes</a>
+    }
+    <a class="btn btn-dark btn-sm" asp-action="ExportToCsv">Exportar a CSV</a>
 </p>
-}
+
 
 <section class="section">
     <div class="row">
@@ -41,9 +44,7 @@
                                         </th>
                                     }
                                 }
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Amount)
-                                </th>
+
                                 <th>
                                     Saldo
                                 </th>
@@ -82,19 +83,22 @@
                                     }
                                 }
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Amount)
+                                    @(item.TotalAmount - item.Amount)
                                 </td>
                                 <td>
-                                    @(item.TotalAmount- item.Amount)
+                                  @(item.PendingPayments + item.Payments)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.PendingPayments)
+                                    @(item.PendingPayments * item.MonthlyPay)
                                 </td>
                                 <td>
-                                    @(item.PendingPayments*item.MonthlyPay)
-                                </td>
-                                <td>
-                                    @CustomFuctions.GetMorosidad(Model.ToList(), item)
+                                    @{
+                                        if (item.PendingPayments > 3)
+                                        {
+                                            @CustomFuctions.GetMorosidad(Model.ToList(), item)
+                                        }
+
+                                    }
                                 </td>
                                 @{
                                     if (Session.Admin)

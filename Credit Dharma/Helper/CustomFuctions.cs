@@ -11,7 +11,9 @@ namespace Credit_Dharma.Helper
         public static int GetPaymentCount(DateTime start, DateTime end)
         {
             var count = (end.Month + end.Year * 12) - (start.Month + start.Year * 12);
-            return count;
+
+            var count2 = (int)(( end-start ).TotalDays / 30);
+            return count2;
         }
 
 
@@ -63,7 +65,7 @@ namespace Credit_Dharma.Helper
             totalAmount += cliente.TotalAmount;
         }
 
-            return ((ocliente.MonthlyPay * ocliente.PendingPayments) / ((pendingBalance)) * 100);
+            return ((ocliente.TotalAmount - ocliente.Amount) / ((pendingBalance)) * 100);
     }
 
 }
