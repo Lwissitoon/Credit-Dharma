@@ -68,6 +68,35 @@ namespace Credit_Dharma.Helper
             return ((ocliente.TotalAmount - ocliente.Amount) / ((pendingBalance)) * 100);
     }
 
+
+
+        public static string CalificarCliente( int cuotas)
+        {
+            if (cuotas<=1)
+            {
+                return "A";
+            }
+            else if(cuotas==2 )
+            {
+                return "B";
+            }
+            else if (cuotas == 3)
+            {
+                return "C";
+            }
+            else if (cuotas >= 4 || 6 <= cuotas)
+            {
+                return "D1";
+            }
+            else if (cuotas >= 7 || 9 <= cuotas)
+            {
+                return "D2";
+            }
+            else
+            {
+                return "E";
+            }
+        }
 }
 
 }

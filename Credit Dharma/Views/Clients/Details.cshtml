@@ -7,17 +7,40 @@
 <h1>@ViewData["Title"]</h1>
 
 <div>
+    @{ 
+        if (Session.Admin)
+        {
+        <h4>El cliente asignado a <b> @Model.Assigned </b></h4>
+        }
+    else
+        {
     <h4>Cliente</h4>
+            }
+        }
     <hr />
     <div>
         <a class="btn btn-primary" asp-action="Index">Atras</a>
         @{
-                    if (Session.Admin)
-                    {
+            if (Session.Admin)
+            {
 
-            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Identification">Asignar encargado</a>
+                <div class="dropdown">
+                    <a class="btn btn-warning dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        Asignar A
+                    </a>
 
-                    }
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        @{
+                            foreach (var dato in ViewBag.usuarios)
+                            {
+                                <li><a class="dropdown-item" asp-action="AssignTo" asp-route-id="@Model.Identification" asp-route-user="@(dato.Username)">@(dato.Username)</a></li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+
+            }
 
         }
     </div>
@@ -52,7 +75,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
 
         </div>
@@ -95,6 +118,10 @@
                             <br />
                             <span>
                                 <b>  Cuotas Generadas:</b> <span>@(CustomFuctions.GetPaymentCount( DateTime.Parse(Model.OpeningDate),DateTime.Now))</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  Clasificacion:</b> <span>@(CustomFuctions.CalificarCliente(Model.PendingPayments))</span>
                             </span>
                             <br />
                             <span>
@@ -188,15 +215,15 @@
                 {
 
 
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Morosidad</h5>
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Morosidad</h5>
 
-                            <!-- Bar Chart -->
-                            <div id="barChart"></div>
+                                <!-- Bar Chart -->
+                                <div id="barChart"></div>
 
-                            <script>
+                                <script>
                 document.addEventListener("DOMContentLoaded", () => {
                     new ApexCharts(document.querySelector("#barChart"), {
                         series: [{
@@ -220,12 +247,12 @@
                         }
                     }).render();
                 });
-                            </script>
-                            <!-- End Bar Chart -->
+                                </script>
+                                <!-- End Bar Chart -->
 
+                            </div>
                         </div>
                     </div>
-                </div>
                 }
             }
         </div>
@@ -233,13 +260,28 @@
     <div>
         <a class="btn btn-primary" asp-action="Index">Atras</a>
         @{
-                    if (Session.Admin)
-                    {
+            if (Session.Admin)
+            {
 
-            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Identification">Asignar encargado</a>
+                <div class="dropdown">
+                    <a class="btn btn-warning dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        Asignar A
+                    </a>
 
-                    }
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        @{
+                            foreach (var dato in ViewBag.usuarios)
+                            {
+                                <li><a class="dropdown-item" asp-action="AssignTo" asp-route-id="@Model.Identification" asp-route-user="@(dato.Username)">@(dato.Username)</a></li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+
+            }
 
         }
     </div>
+
 </div>

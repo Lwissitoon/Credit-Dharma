@@ -11,6 +11,7 @@ using System.Text.Json;
 using Credit_Dharma.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace Credit_Dharma.Views
 {
@@ -32,7 +33,8 @@ namespace Credit_Dharma.Views
 
             clientes = clientes.FindAll(c => c.AccountSubType.ToUpper().Trim() == "Loan".ToUpper().Trim());
             // Response.WriteAsync(CustomFuctions.GetPaymentCount(DateTime.Parse( clientes.First().OpeningDate),DateTime.Now).ToString());
-
+            var usuariosLista = _context.Usuario.ToList();
+            ViewBag.usuarios = usuariosLista;
 
             if (Session.Loggedin)
             {
@@ -77,7 +79,8 @@ namespace Credit_Dharma.Views
             if (Session.Loggedin)
             {
 
-
+                var usuariosLista = _context.Usuario.ToList();
+                ViewBag.usuarios = usuariosLista;
 
                 if (id == null)
                 {
@@ -361,6 +364,18 @@ namespace Credit_Dharma.Views
                 sb.AppendLine();
             }
             return File(Encoding.ASCII.GetBytes(sb.ToString()), "text/csv", DateTime.Now.Date.ToString("dd-MM-yyyy")+"_clientes.csv");
+        }
+
+
+        public async Task<ActionResult> AssignToAsync(string id,string user)
+        {
+            var cliente = await _context.Client.FirstOrDefaultAsync(x => x.Identification == id);
+                cliente.Assigned = user ;
+            _context.SaveChanges();
+            var url = Request.Headers["Referer"].ToString();
+            //Response.WriteAsync(user+id);
+            return Redirect(url);
+
         }
     }
 }
