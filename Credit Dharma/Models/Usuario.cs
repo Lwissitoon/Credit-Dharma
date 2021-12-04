@@ -26,5 +26,8 @@ namespace UserManager.Models
         [DisplayName("Clave")]
         [Required]
         public string Password { get; set; }
+        [DisplayName("Correo")]
+        [Required]
+        public string Email { get; set; }
     }
 }

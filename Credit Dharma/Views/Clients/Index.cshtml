@@ -49,10 +49,10 @@
                                     Saldo
                                 </th>
                                 <th>
-                                    @Html.DisplayNameFor(model => model.PendingPayments)
+                                   Cuotas Generadas
                                 </th>
                                 <th>
-                                    Saldo Pendiente
+                                    @Html.DisplayNameFor(model => model.PendingPayments)
                                 </th>
                                 <th>
                                     Morosidad (%)
@@ -89,7 +89,7 @@
                                         @(item.PendingPayments + item.Payments)
                                     </td>
                                     <td>
-                                        @(item.PendingPayments * item.MonthlyPay)
+                                        @Html.DisplayFor(modelItem => item.PendingPayments)
                                     </td>
                                     <td>
                                         @{

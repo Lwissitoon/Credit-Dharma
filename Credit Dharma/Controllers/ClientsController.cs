@@ -298,7 +298,7 @@ namespace Credit_Dharma.Views
             try
             {
                 Email.SendEmail(cliente.Identification, cliente.Email, @"Tiene un total de " + cliente.PendingPayments + " cuotas vencidas, favor pagar lo antes posible.");
-                _context.Registro.Add(new Registro() { NotificationDate = DateTime.Now.ToString(), Username = Session.Username, UserAccountNumber = cliente.Identification, NotificationDetails = "Notificacion enviada via correo desde el sistema" });
+                _context.Registro.Add(new Registro() { NotificationDate = DateTime.Now.ToString(), Username = Session.Username, UserAccountNumber = cliente.Identification, NotificationDetails = "Notificacion enviada via correo desde el sistema",FlowStep="Recordatorio Rapido Por Correo" });
                 await _context.SaveChangesAsync();
             }
             catch (ArgumentNullException)
@@ -372,6 +372,20 @@ namespace Credit_Dharma.Views
             var cliente = await _context.Client.FirstOrDefaultAsync(x => x.Identification == id);
                 cliente.Assigned = user ;
             _context.SaveChanges();
+
+            var usuario = await _context.Usuario.FirstOrDefaultAsync(x => x.Username == user);
+            try
+            {
+                Email.SendEmailInternalNotify(cliente.Identification,usuario.Email,"El usuario "+Session.Username+" te acaba de asignar un nuevo cliente con el numero de cuenta "+cliente.Identification+". Esta disponible en tu dashboard para seguimiento.");
+
+
+
+             }
+            catch (ArgumentNullException)
+            {
+                return RedirectToAction("Index");
+             }
+
             var url = Request.Headers["Referer"].ToString();
             //Response.WriteAsync(user+id);
             return Redirect(url);

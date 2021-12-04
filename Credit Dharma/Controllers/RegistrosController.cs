@@ -78,7 +78,7 @@ namespace Credit_Dharma.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdNotification,NotificationDate,UserAccountNumber,NotificationDetails,Username")] Registro registro)
+        public async Task<IActionResult> Create([Bind("IdNotification,NotificationDate,UserAccountNumber,NotificationDetails,Username,FlowStep")] Registro registro)
         {
             if (ModelState.IsValid)
             {

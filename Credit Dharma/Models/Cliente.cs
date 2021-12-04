@@ -38,7 +38,7 @@ namespace Credit_Dharma.Models
         [DisplayName("Cuotas Pagadas")]
 
         public int Payments { get; set; }
-        [DisplayName("Cuotas Generadas")]
+        [DisplayName("Cuotas Pendientes")]
         public int PendingPayments { get; set; }
         [DisplayName("Cuota Mensual")]
 

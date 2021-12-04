@@ -25,5 +25,8 @@ namespace Credit_Dharma.Models
         [DisplayName("Realizada por")]
         public string Username { get; set; }
 
+        [DisplayName("Flujo")]
+        [Required]
+        public string FlowStep { get; set; }
     }
 }
