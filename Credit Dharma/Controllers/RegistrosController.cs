@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Credit_Dharma.Data;
 using Credit_Dharma.Models;
 using Credit_Dharma.Helper;
+using System.Text;
 
 namespace Credit_Dharma.Controllers
 {
@@ -188,6 +189,43 @@ namespace Credit_Dharma.Controllers
         private bool RegistroExists(int id)
         {
             return _context.Registro.Any(e => e.IdNotification == id);
+        }
+
+
+
+        public ActionResult ExportToCsv()
+        {
+            var registros = _context.Registro.ToList();
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("ID");
+            sb.Append(",");
+            sb.Append("Fecha");
+            sb.Append(",");
+            sb.Append("Numero de cuenta");
+            sb.Append(",");
+            sb.Append("Paso en el flujo");
+            sb.Append(",");
+            sb.Append("Accion realiazada por ");
+            sb.Append(",");
+            sb.Append("Detalles");
+            sb.AppendLine();
+            foreach (var registro in registros)
+            {
+                sb.Append(registro.IdNotification);
+                sb.Append(",");
+                sb.Append(registro.NotificationDate);
+                sb.Append(",");
+                sb.Append(registro.UserAccountNumber);
+                sb.Append(",");
+                sb.Append(registro.FlowStep);
+                sb.Append(",");
+                sb.Append(registro.Username);
+                sb.Append(",");
+                sb.Append(registro.NotificationDetails);
+                sb.AppendLine();
+            }
+            return File(Encoding.ASCII.GetBytes(sb.ToString()), "text/csv", DateTime.Now.Date.ToString("dd-MM-yyyy") + "_Registro_Notificaciones.csv");
         }
     }
 }

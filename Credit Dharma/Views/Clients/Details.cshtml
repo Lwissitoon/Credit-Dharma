@@ -7,6 +7,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <div>
+
     @{ 
         if (Session.Admin)
         {
@@ -18,7 +19,7 @@
             }
         }
     <hr />
-    <div>
+    <div class="btn-group" role="group" aria-label="Detalle opciones">
         <a class="btn btn-primary" asp-action="Index">Atras</a>
         @{
             if (Session.Admin)
@@ -44,7 +45,7 @@
 
         }
     </div>
-
+    <br />
     <br />
     <!-- Customers Card -->
     <div class="col-xxl-4 col-xl-12">
@@ -129,7 +130,7 @@
                             </span>
                             <br />
                             <span>
-                                <b>  Proximo Pago:</b> <span>@(DateTime.Parse(Model.OpeningDate).AddMonths(CustomFuctions.GetPaymentCount(DateTime.Parse( Model.OpeningDate),DateTime.Now)).ToShortDateString())</span>
+                                <b>  Proximo Pago:</b> <span>@(DateTime.Parse(Model.OpeningDate).AddMonths(CustomFuctions.GetPaymentCount(DateTime.Parse( Model.OpeningDate),DateTime.Now)+1).ToShortDateString())</span>
                             </span>
                             <br />
                             <span>
@@ -257,7 +258,8 @@
             }
         </div>
     </section>
-    <div>
+    <br />
+    <div class="btn-group" role="group" aria-label="Detalles opciones">
         <a class="btn btn-primary" asp-action="Index">Atras</a>
         @{
             if (Session.Admin)
