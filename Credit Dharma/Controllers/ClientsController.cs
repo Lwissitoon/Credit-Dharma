@@ -12,6 +12,7 @@ using Credit_Dharma.Services;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace Credit_Dharma.Views
 {
@@ -313,8 +314,18 @@ namespace Credit_Dharma.Views
 
         public ActionResult ExportToCsv()
         {
-            var clientes = _context.Client.ToList();
+            List<Cliente> clientes;
+
+            if (Session.Admin)
+            {
+       
+             clientes = _context.Client.ToList();
             clientes = clientes.FindAll(c => c.AccountSubType.ToUpper().Trim() == "Loan".ToUpper().Trim());
+              }
+            else
+            {
+                clientes = _context.Client.FromSqlRaw("SELECT * FROM[dbo].[Client] Where[Assigned] = '" + Session.Username + "'").ToList();
+            }
             StringBuilder sb = new StringBuilder();
             sb.Append("Cuenta");
             sb.Append(",");
