@@ -7,11 +7,45 @@
 <h1>@ViewData["Title"]</h1>
 
 <div>
+
+    @{ 
+        if (Session.Admin)
+        {
+        <h4>El cliente asignado a <b> @Model.Assigned </b></h4>
+        }
+    else
+        {
     <h4>Cliente</h4>
+            }
+        }
     <hr />
-    <div>
+    <div class="btn-group" role="group" aria-label="Detalle opciones">
         <a class="btn btn-primary" asp-action="Index">Atras</a>
+        @{
+            if (Session.Admin)
+            {
+
+                <div class="dropdown">
+                    <a class="btn btn-warning dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        Asignar A
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        @{
+                            foreach (var dato in ViewBag.usuarios)
+                            {
+                                <li><a class="dropdown-item" asp-action="AssignTo" asp-route-id="@Model.Identification" asp-route-user="@(dato.Username)">@(dato.Username)</a></li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+
+            }
+
+        }
     </div>
+    <br />
     <br />
     <!-- Customers Card -->
     <div class="col-xxl-4 col-xl-12">
@@ -42,16 +76,7 @@
                         </div>
                     </div>
                 </div>
-                <br />
-                @{
-                    if (Session.Admin)
-                    {
-                        <div>
-                            <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Identification">Editar</a>
-                        </div>
-                    }
 
-                }
             </div>
 
         </div>
@@ -63,7 +88,7 @@
 
         <div class="card info-card customers-card">
             <div class="card-body">
-                <h5 class="card-title">Detalle del Prestamo</h5>
+                <h5 class="card-title">Detalle del Prestamo (@(Model.Nickname))</h5>
 
                 <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -85,14 +110,33 @@
                             </span>
                             <br />
                             <span>
+                                <b>  Saldo:</b> <span>@(Model.TotalAmount-Model.Amount)</span>
+                            </span>
+                            <br />
+                            <span>
                                 <b>  @Html.DisplayNameFor(model => model.MonthlyPay):</b> <span>@Html.DisplayFor(model => model.MonthlyPay)</span>
                             </span>
                             <br />
                             <span>
-                                <b>  @Html.DisplayNameFor(model => model.OpeningDate):</b> <span>@Html.DisplayFor(model => model.OpeningDate)</span>
+                                <b>  Cuotas Generadas:</b> <span>@(CustomFuctions.GetPaymentCount( DateTime.Parse(Model.OpeningDate),DateTime.Now))</span>
                             </span>
                             <br />
-
+                            <span>
+                                <b>  Clasificacion:</b> <span>@(CustomFuctions.CalificarCliente(Model.PendingPayments))</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.OpeningDate):</b> <span>@(DateTime.Parse(Model.OpeningDate).ToShortDateString())</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  Proximo Pago:</b> <span>@(DateTime.Parse(Model.OpeningDate).AddMonths(CustomFuctions.GetPaymentCount(DateTime.Parse( Model.OpeningDate),DateTime.Now)+1).ToShortDateString())</span>
+                            </span>
+                            <br />
+                            <span>
+                                <b>  Vence:</b> <span>@(DateTime.Parse(Model.OpeningDate).AddMonths(Convert.ToInt32(Model.TotalAmount/Model.MonthlyPay)).ToShortDateString())</span>
+                            </span>
+                            <br />
                         </div>
                     </div>
                 </div>
@@ -214,7 +258,32 @@
             }
         </div>
     </section>
-    <div>
+    <br />
+    <div class="btn-group" role="group" aria-label="Detalles opciones">
         <a class="btn btn-primary" asp-action="Index">Atras</a>
+        @{
+            if (Session.Admin)
+            {
+
+                <div class="dropdown">
+                    <a class="btn btn-warning dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        Asignar A
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        @{
+                            foreach (var dato in ViewBag.usuarios)
+                            {
+                                <li><a class="dropdown-item" asp-action="AssignTo" asp-route-id="@Model.Identification" asp-route-user="@(dato.Username)">@(dato.Username)</a></li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+
+            }
+
+        }
     </div>
+
 </div>

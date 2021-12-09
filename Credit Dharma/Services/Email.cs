@@ -21,5 +21,18 @@ namespace Credit_Dharma.Services
 
             smtpClient.Send("creditdharma@outlook.com", email, "Estatus de cuenta "+account, message);
         }
+
+        public static void SendEmailInternalNotify(string account, string email, string message)
+        {
+            var smtpClient = new SmtpClient("smtp-mail.outlook.com")
+            {
+                Port = 587,
+                Credentials = new NetworkCredential("creditdharma@outlook.com", "Zxc@12345"),
+                EnableSsl = true,
+
+            };
+
+            smtpClient.Send("creditdharma@outlook.com", email, "Asignacion del Cliente " + account, message);
+        }
     }
 }

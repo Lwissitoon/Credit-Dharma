@@ -78,20 +78,25 @@ namespace Credit_Dharma.Services.Fihogar
             var amount = a.SelectTokens("$.Data..Balance..Amount..Amount");
 
             List<Cliente> clientes = new List<Cliente>();
-      
+            Cliente profile = Profile.GetProfile(consent,token,provider);
+
+
             for (int i = 0; i < id.ToList().Count; i++)
             {
 
                 clientes.Add(new Cliente()
                 {
                     Identification = (string)id.ToList().ElementAt(i),
-                    Status= (string)status.ToList().ElementAt(i),
+                    OpeningDate= (string)nickname.ToList().ElementAt(i),
+                    Status = (string)status.ToList().ElementAt(i),
                     Currency = (string)currency.ToList().ElementAt(i),
                     AccountSubType = (string)accountSubType.ToList().ElementAt(i),
                     Nickname = (string)nickname.ToList().ElementAt(i),
                     Amount = (double)amount.ToList().ElementAt(i),
-                    Payments = Transaction.GetTransactionsAccount((string)id.ToList().ElementAt(i).ToString()).Count
-
+                    Payments = Transaction.GetTransactionsAccount((string)id.ToList().ElementAt(i).ToString()).Count,
+                    Name=profile.Name,
+                    Lastname=profile.Lastname
+                    
                 }) ; 
             }
 
@@ -117,6 +122,9 @@ namespace Credit_Dharma.Services.Fihogar
                         updateClient.Nickname = cliente.Nickname;
                         updateClient.Amount = cliente.Amount;
                         updateClient.Payments = cliente.Payments;
+                        updateClient.OpeningDate = cliente.OpeningDate;
+                        updateClient.Name = cliente.Name;
+                        updateClient.Lastname = cliente.Lastname;
                         await context.SaveChangesAsync();
                     }
                 }

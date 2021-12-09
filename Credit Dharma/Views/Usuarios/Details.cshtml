@@ -10,9 +10,19 @@
     <h4>Usuario</h4>
     <hr />
     <!-- Customers Card -->
-    <div>
+    <div class="btn-group" role="group" aria-label="Detalles usuario">
         <a class="btn btn-primary" asp-action="Index">Atras</a>
+        @{
+            if (Session.Admin)
+            {
+
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.UserId">Editar</a>
+
+            }
+
+        }
     </div>
+    <br />
     <br />
     <div class="col-xxl-4 col-xl-12">
 
@@ -39,6 +49,10 @@
                                 <b>  @Html.DisplayNameFor(model => model.Role):</b> <span>@Html.DisplayFor(model => model.Role)</span>
                             </span>
                             <br />
+                            <span>
+                                <b>  @Html.DisplayNameFor(model => model.Email):</b> <span>@Html.DisplayFor(model => model.Email)</span>
+                            </span>
+                            <br />
                         </div>
                     </div>
                 </div>
@@ -59,8 +73,17 @@
 
     </div><!-- End Customers Card -->
 
-    <div>
+    <div class="btn-group" role="group" aria-label="Detalles usuario">
         <a class="btn btn-primary" asp-action="Index">Atras</a>
+        @{
+            if (Session.Admin)
+            {
+
+                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.UserId">Editar</a>
+
+            }
+
+        }
     </div>
 
 

@@ -6,9 +6,15 @@
 
 <h1>@ViewData["Title"]</h1>
 
+
 <p>
-    <a class="btn btn-primary" asp-action="Refresh">Refrescar Lista Clientes</a>
+    @if (Session.Admin)
+    {
+        <a class="btn btn-primary btn-sm" asp-action="Refresh">Refrescar Lista Clientes</a>
+    }
+    <a class="btn btn-dark btn-sm" asp-action="ExportToCsv">Exportar a CSV</a>
 </p>
+
 
 <section class="section">
     <div class="row">
@@ -17,26 +23,40 @@
             <div class="card">
                 <div class="card-body">
                     <table class="datatable table table-striped">
-                        <thead class="thead-dark">
                         <thead>
                             <tr>
                                 <th>
                                     @Html.DisplayNameFor(model => model.Identification)
                                 </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Nickname)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.Amount)
-                                </th>
-                                <th>
-                                    @Html.DisplayNameFor(model => model.TotalAmount)
-                                </th>
+                                @{
+                                    if (Session.Admin)
+                                    {
 
+
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Assigned)
+                                        </th>
+                                    }
+                                    else
+                                    {
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Nickname)
+                                        </th>
+                                    }
+                                }
+
+                                <th>
+                                    Saldo
+                                </th>
+                                <th>
+                                    Cuotas Generadas
+                                </th>
                                 <th>
                                     @Html.DisplayNameFor(model => model.PendingPayments)
                                 </th>
-
+                                <th>
+                                    Morosidad (%)
+                                </th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -47,28 +67,84 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Identification)
                                     </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Nickname)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Amount)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.TotalAmount)
-                                    </td>
+                                    @{
+                                        if (Session.Admin)
+                                        {
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Assigned)
+                                            </td>
+                                        }
+                                        else
+                                        {
 
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Nickname)
+                                            </td>
+                                        }
+                                    }
+                                    <td>
+                                        @(item.TotalAmount - item.Amount)
+                                    </td>
+                                    <td>
+                                        @(item.PendingPayments + item.Payments)
+                                    </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.PendingPayments)
                                     </td>
+                                    <td>
+                                        @{
+                                            if (item.PendingPayments > 3)
+                                            {
+                                                @CustomFuctions.GetMorosidad(Model.ToList(), item)
+                                            }
 
+                                        }
+                                    </td>
                                     @{
                                         if (Session.Admin)
                                         {
                                             <td>
                                                 <div class="btn-group" role="group">
                                                     <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.Identification">Ver</a> <br />
-                                                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@item.Identification">Editar</a> <br />
-                                                    <a class="btn btn-success btn-sm" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                    <a class="btn btn-danger btn-sm" asp-action="Edit" asp-route-id="@item.Identification">Temp</a> <br />
+                                                    <div class="dropdown">
+                                                        <a class="btn btn-warning dropdown-toggle btn-sm" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Asignar A
+                                                        </a>
+
+                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                            @{
+                                                                foreach (var dato in ViewBag.usuarios)
+                                                                {
+                                                                    <li><a class="dropdown-item" asp-action="AssignTo" asp-route-id="@item.Identification" asp-route-user="@(dato.Username)">@(dato.Username)</a></li>
+                                                                }
+                                                            }
+
+                                                        </ul>
+                                                    </div>
+
+
+
+                                                    <div class="dropdown">
+                                                        <a class="btn btn-success dropdown-toggle btn-sm" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            Notificar
+                                                        </a>
+
+                                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                            @{ if (item.Email != null)
+                                                                {
+                                                                    <li><a class="dropdown-item" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Via Correo</a></li>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <li><span>No hay correo activo</span></li>
+                                                                }
+                                                            }
+                                                        </ul>
+                                                    </div>
+
+
+
 
                                                 </div>
                                             </td>
@@ -78,7 +154,16 @@
                                             <td>
                                                 <div class="btn-group" role="group">
                                                     <a class="btn btn-warning btn-sm" asp-action="Details" asp-route-id="@item.Identification">Ver</a><br />
-                                                    <a class="btn btn-success btn-sm" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                    @{
+                                                        if (item.Email == null)
+                                                        {
+                                                            <a class="btn btn-success btn-sm disabled" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="btn btn-success btn-sm" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
+                                                        }
+                                                    }
                                                 </div>
                                             </td>
                                         }

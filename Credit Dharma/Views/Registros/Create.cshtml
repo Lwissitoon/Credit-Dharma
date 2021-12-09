@@ -16,19 +16,29 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="NotificationDate" class="control-label"></label>
-                        <input hidden readonly type="datetime" asp-for="NotificationDate" class="form-control"  value="@DateTime.Now"/>
+                        <input hidden readonly type="datetime" asp-for="NotificationDate" class="form-control" value="@DateTime.Now" />
                         <span asp-validation-for="NotificationDate" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="UserAccountNumber" class="control-label"></label>
-                        <input asp-for="UserAccountNumber" class="form-control" />
+                        <input required asp-for="UserAccountNumber" class="form-control" />
                         <span asp-validation-for="UserAccountNumber" class="text-danger"></span>
                     </div>
 
+                    <div class="form-group">
+                        <label asp-for="FlowStep" class="control-label"></label>
+                        <select  asp-for="FlowStep" class="form-control">
+                            <option value="Correo 1"> Correo 1</option>
+                            <option value="Llamada 1"> Llamada 1</option>
+                            <option value="Correo 2">Correo 2</option>
+                            <option value="Llamada 2"> Llamada 2</option>
+                        </select>
+                        <span asp-validation-for="FlowStep" class="text-danger"></span>
+                    </div>
 
                     <div class="form-group">
                         <label asp-for="NotificationDetails" class="control-label"></label>
-                        <textarea rows="5" cols="60" asp-for="NotificationDetails" class="form-control">
+                        <textarea required rows="5" cols="60" asp-for="NotificationDetails" class="form-control">
 
                         </textarea>
                         <span asp-validation-for="NotificationDetails" class="text-danger"></span>

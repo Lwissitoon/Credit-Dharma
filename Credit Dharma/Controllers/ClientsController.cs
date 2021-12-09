@@ -9,6 +9,10 @@ using Credit_Dharma.Services.Fihogar;
 using Credit_Dharma.Helper;
 using System.Text.Json;
 using Credit_Dharma.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Text;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace Credit_Dharma.Views
 {
@@ -30,16 +34,38 @@ namespace Credit_Dharma.Views
 
             clientes = clientes.FindAll(c => c.AccountSubType.ToUpper().Trim() == "Loan".ToUpper().Trim());
             // Response.WriteAsync(CustomFuctions.GetPaymentCount(DateTime.Parse( clientes.First().OpeningDate),DateTime.Now).ToString());
-
+            var usuariosLista = _context.Usuario.ToList();
+            ViewBag.usuarios = usuariosLista;
 
             if (Session.Loggedin)
             {
+              
                 foreach (var cliente in clientes)
                 {
-                    cliente.PendingPayments = CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) - cliente.Payments;
+                    try
+                    {
+                        cliente.PendingPayments = CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) - cliente.Payments;
+
+                    }
+                    catch(ArgumentNullException)
+                    {
+                        cliente.PendingPayments = 0;
+                    }
                     await _context.SaveChangesAsync();
                 }
-                return View(clientes);
+                if (Session.Admin)
+                {
+                    clientes = clientes.FindAll(c => c.AccountSubType.ToUpper().Trim() == "Loan".ToUpper().Trim());
+                    return View(clientes);
+                }
+                else
+                {
+
+
+                 return View( _context.Client.FromSqlRaw("SELECT * FROM[dbo].[Client] Where[Assigned] = '"+Session.Username+"'"));
+                        
+                    
+                }
             }
             else
             {
@@ -54,7 +80,8 @@ namespace Credit_Dharma.Views
             if (Session.Loggedin)
             {
 
-
+                var usuariosLista = _context.Usuario.ToList();
+                ViewBag.usuarios = usuariosLista;
 
                 if (id == null)
                 {
@@ -70,17 +97,33 @@ namespace Credit_Dharma.Views
                 {
                     return NotFound();
                 }
-            
-                ViewData["Montos"] = JsonSerializer.Serialize(new double[] { client.Amount, client.TotalAmount - client.Amount });
-                ViewData["Cuotas"] = JsonSerializer.Serialize(new double[] { client.Payments, client.PendingPayments });
+
+                try
+                {
+                    ViewData["Montos"] = JsonSerializer.Serialize(new double[] { client.Amount, client.TotalAmount - client.Amount });
+                    ViewData["Cuotas"] = JsonSerializer.Serialize(new double[] { client.Payments, client.PendingPayments });
+                }
+                catch(ArgumentNullException)
+                { 
+                    ViewData["Montos"] = JsonSerializer.Serialize(new double[] {0});
+                    ViewData["Cuotas"] = JsonSerializer.Serialize(new double[] { 0});
+                }
+
+
+
+
 
                 if (client.PendingPayments > 3)
                 {
-                    var morosidad = (float)((client.MonthlyPay * client.PendingPayments) / client.TotalAmount)*100;
-                    ViewData["Morosidad"] = JsonSerializer.Serialize(new float[] { morosidad });
+                    var morosidad = (float)((client.MonthlyPay * client.PendingPayments) / (client.TotalAmount-(client.Payments*client.MonthlyPay)) )*100;
+                    ViewData["Morosidad"] = JsonSerializer.Serialize(new double[] {CustomFuctions.GetMorosidad(_context.Client.ToList(),client) });
 
                     // Response.WriteAsync(JsonSerializer.Serialize(new float[] { morosidad}).ToString());
                 }
+
+
+
+
 
                 else
                 {
@@ -128,7 +171,17 @@ namespace Credit_Dharma.Views
         {
             if (Session.Admin)
             {
+                var usuariosLista = (from Usuario in _context.Usuario
+                                   select new SelectListItem()
+                                   {
+                                       Text = Usuario.Username,
+                                       Value = Usuario.Username
+                                   }).ToList();
 
+
+
+
+                ViewBag.usuarios = usuariosLista;
 
                 if (id == null)
                 {
@@ -154,7 +207,7 @@ namespace Credit_Dharma.Views
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Identification,Status,Currency,AccountSubType,Nickname,OpeningDate,Amount,Name,Lastname,Email,PhoneNumber,TotalAmount,Payments,PendingPayments,MonthlyPay")] Cliente client)
+        public async Task<IActionResult> Edit(string id, [Bind("Identification,Status,Currency,AccountSubType,Nickname,OpeningDate,Amount,Name,Lastname,Email,PhoneNumber,TotalAmount,Payments,PendingPayments,MonthlyPay,Assigned")] Cliente client)
         {
             if (id != client.Identification)
             {
@@ -232,8 +285,10 @@ namespace Credit_Dharma.Views
 
         public async Task<ActionResult> RefreshAsync()
         {
-          await  Account.RefreshAccountsAsync(_context, _context.Client);
-
+            if (Session.Admin)
+            {
+                await Account.RefreshAccountsAsync(_context, _context.Client);
+            }
             return RedirectToAction("Index");
         }
 
@@ -241,10 +296,115 @@ namespace Credit_Dharma.Views
         {
             var cliente = await _context.Client.FirstOrDefaultAsync(m => m.Identification == id);
 
-             Email.SendEmail(cliente.Identification,cliente.Email,@"Tiene un total de "+ cliente.PendingPayments+" cuotas vencidas, favor pagar lo antes posible.");
-            _context.Registro.Add(new Registro() {NotificationDate=DateTime.Now.ToString(),Username=Session.Username,UserAccountNumber=cliente.Identification,NotificationDetails="Notificacion enviada via correo desde el sistema" });
-            await _context.SaveChangesAsync();
+            try
+            {
+                Email.SendEmail(cliente.Identification, cliente.Email, @"Tiene un total de " + cliente.PendingPayments + " cuotas vencidas, favor pagar lo antes posible.");
+                _context.Registro.Add(new Registro() { NotificationDate = DateTime.Now.ToString(), Username = Session.Username, UserAccountNumber = cliente.Identification, NotificationDetails = "Notificacion enviada via correo desde el sistema",FlowStep="Recordatorio Rapido Por Correo" });
+                await _context.SaveChangesAsync();
+            }
+            catch (ArgumentNullException)
+            {
+
+                return RedirectToAction("Index");
+            }
+
             return RedirectToAction("Index");
+        }
+
+
+        public ActionResult ExportToCsv()
+        {
+            List<Cliente> clientes;
+
+            if (Session.Admin)
+            {
+       
+             clientes = _context.Client.ToList();
+            clientes = clientes.FindAll(c => c.AccountSubType.ToUpper().Trim() == "Loan".ToUpper().Trim());
+              }
+            else
+            {
+                clientes = _context.Client.FromSqlRaw("SELECT * FROM[dbo].[Client] Where[Assigned] = '" + Session.Username + "'").ToList();
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Cuenta");
+            sb.Append(",");
+            sb.Append("Estatus");
+            sb.Append(",");
+            sb.Append("Moneda");
+            sb.Append(",");
+            sb.Append("Descripcion");
+            sb.Append(",");
+            sb.Append("Fecha Apertura");
+            sb.Append(",");
+            sb.Append("Saldo");
+            sb.Append(",");
+            sb.Append("Saldo Pendiente");
+            sb.Append(",");
+            sb.Append("Cuota Mensual");
+            sb.Append(",");
+            sb.Append("Cuotas Pendientes");
+            sb.Append(",");
+            sb.Append("Cuotas Pagadas");
+            sb.Append(",");
+            sb.Append("Cuotas Generadas");
+            sb.Append(",");
+            sb.Append("Calificacion");
+            sb.AppendLine();
+            foreach (var cliente in clientes)
+            {
+                sb.Append(cliente.Identification);
+                sb.Append(",");
+                sb.Append(cliente.Status);
+                sb.Append(",");
+                sb.Append(cliente.Currency);
+                sb.Append(",");
+                sb.Append(cliente.Nickname);
+                sb.Append(",");
+                sb.Append(cliente.OpeningDate);
+                sb.Append(",");
+                sb.Append(cliente.TotalAmount-cliente.Amount);
+                sb.Append(",");
+                sb.Append(cliente.PendingPayments*cliente.MonthlyPay);
+                sb.Append(",");
+                sb.Append(cliente.MonthlyPay);
+                sb.Append(",");
+                sb.Append(cliente.PendingPayments);
+                sb.Append(",");
+                sb.Append(cliente.Payments);
+                sb.Append(",");
+                sb.Append(cliente.Payments+cliente.PendingPayments);
+                sb.Append(",");
+                sb.Append(CustomFuctions.CalificarCliente( cliente.PendingPayments));
+                sb.AppendLine();
+            }
+            return File(Encoding.ASCII.GetBytes(sb.ToString()), "text/csv", DateTime.Now.Date.ToString("dd-MM-yyyy")+"_clientes.csv");
+        }
+
+
+        public async Task<ActionResult> AssignToAsync(string id,string user)
+        {
+            var cliente = await _context.Client.FirstOrDefaultAsync(x => x.Identification == id);
+                cliente.Assigned = user ;
+            _context.SaveChanges();
+
+            var usuario = await _context.Usuario.FirstOrDefaultAsync(x => x.Username == user);
+            try
+            {
+                Email.SendEmailInternalNotify(cliente.Identification,usuario.Email,"El usuario "+Session.Username+" te acaba de asignar un nuevo cliente con el numero de cuenta "+cliente.Identification+". Esta disponible en tu dashboard para seguimiento.");
+
+
+
+             }
+            catch (ArgumentNullException)
+            {
+                return RedirectToAction("Index");
+             }
+
+            var url = Request.Headers["Referer"].ToString();
+            //Response.WriteAsync(user+id);
+            return Redirect(url);
+
         }
     }
 }

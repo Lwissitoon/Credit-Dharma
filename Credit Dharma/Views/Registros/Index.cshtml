@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<Credit_Dharma.Models.Registro>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Registros de Notificaciones";
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 <p>
-    <a class="btn btn-primary" asp-action="Create">Agregar Registro de Comunicacion</a>
+    <a class="btn btn-primary btn-sm" asp-action="Create">Agregar Registro de Comunicacion</a>
+    <a class="btn btn-dark btn-sm" asp-action="ExportToCsv">Exportar a CSV</a>
 </p>
 
 <section class="section">
@@ -28,28 +29,34 @@
                                 <th>
                                     @Html.DisplayNameFor(model => model.Username)
                                 </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FlowStep)
+                                </th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.NotificationDate)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.UserAccountNumber)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Username)
-                                    </td>
-                                    <td>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NotificationDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserAccountNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Username)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FlowStep)
+                                </td>
+                                <td>
 
-                                            <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.IdNotification">Ver</a> 
+                                    <a class="btn btn-primary btn-sm" asp-action="Details" asp-route-id="@item.IdNotification">Ver</a>
 
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>
