@@ -115,7 +115,7 @@ namespace Credit_Dharma.Views
 
                 if (client.PendingPayments > 3)
                 {
-                    var morosidad = (float)((client.MonthlyPay * client.PendingPayments) / (client.TotalAmount-(client.Payments*client.MonthlyPay)) )*100;
+                   
                     ViewData["Morosidad"] = JsonSerializer.Serialize(new double[] {CustomFuctions.GetMorosidad(_context.Client.ToList(),client) });
 
                     // Response.WriteAsync(JsonSerializer.Serialize(new float[] { morosidad}).ToString());
