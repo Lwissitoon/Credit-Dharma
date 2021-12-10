@@ -337,6 +337,10 @@ namespace Credit_Dharma.Views
             sb.Append(",");
             sb.Append("Fecha Apertura");
             sb.Append(",");
+            sb.Append("Fecha Proximo Pago");
+            sb.Append(",");
+            sb.Append("Fecha de vencimiento");
+            sb.Append(",");
             sb.Append("Saldo");
             sb.Append(",");
             sb.Append("Saldo Pendiente");
@@ -362,6 +366,10 @@ namespace Credit_Dharma.Views
                 sb.Append(cliente.Nickname);
                 sb.Append(",");
                 sb.Append(cliente.OpeningDate);
+                sb.Append(",");
+                sb.Append(DateTime.Parse(cliente.OpeningDate).AddMonths(CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) + 1).ToShortDateString());
+                sb.Append(",");
+                sb.Append(DateTime.Parse(cliente.OpeningDate).AddMonths(Convert.ToInt32(cliente.TotalAmount / cliente.MonthlyPay)).ToShortDateString());
                 sb.Append(",");
                 sb.Append(cliente.TotalAmount-cliente.Amount);
                 sb.Append(",");
