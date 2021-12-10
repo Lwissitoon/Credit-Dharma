@@ -91,15 +91,21 @@
                                     <td>
                                         @Html.DisplayFor(modelItem => item.PendingPayments)
                                     </td>
-                                    <td>
-                                        @{
-                                            if (item.PendingPayments > 3)
-                                            {
-                                                @CustomFuctions.GetMorosidad(Model.ToList(), item)
-                                            }
 
+                                    @{
+                                        if (item.PendingPayments > 3)
+                                        {
+                                            <td>
+                                                @CustomFuctions.GetMorosidad(Model.ToList(), item)
+                                            </td>
                                         }
-                                    </td>
+
+                                        else
+                                        {
+                                            <td>0</td>
+                                        }
+                                    }
+
                                     @{
                                         if (Session.Admin)
                                         {
