@@ -354,6 +354,8 @@ namespace Credit_Dharma.Views
             sb.Append("Cuotas Generadas");
             sb.Append(",");
             sb.Append("Calificacion");
+            sb.Append(",");
+            sb.Append("Morosidad %");
             sb.AppendLine();
             foreach (var cliente in clientes)
             {
@@ -384,6 +386,13 @@ namespace Credit_Dharma.Views
                 sb.Append(cliente.Payments+cliente.PendingPayments);
                 sb.Append(",");
                 sb.Append(CustomFuctions.CalificarCliente( cliente.PendingPayments));
+                if (cliente.PendingPayments>3)
+                {
+
+
+                    sb.Append(",");
+                    sb.Append(CustomFuctions.GetMorosidad(clientes.ToList(), cliente));
+                }
                 sb.AppendLine();
             }
             return File(Encoding.ASCII.GetBytes(sb.ToString()), "text/csv", DateTime.Now.Date.ToString("dd-MM-yyyy")+"_clientes.csv");
