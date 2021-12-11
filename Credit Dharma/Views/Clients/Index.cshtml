@@ -161,14 +161,24 @@
                                                 <div class="btn-group" role="group">
                                                     <a class="btn btn-warning btn-sm" asp-action="Details" asp-route-id="@item.Identification">Ver</a><br />
                                                     @{
-                                                        if (item.Email == null)
-                                                        {
-                                                            <a class="btn btn-success btn-sm disabled" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
-                                                        }
-                                                        else
-                                                        {
-                                                            <a class="btn btn-success btn-sm" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Notificar</a>
-                                                        }
+                                                        <div class="dropdown">
+                                                            <a class="btn btn-success dropdown-toggle btn-sm" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                Notificar
+                                                            </a>
+
+                                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                                @{ if (item.Email != null)
+                                                                    {
+                                                                        <li><a class="dropdown-item" asp-action="NotifyClientEmail" asp-route-id="@item.Identification">Via Correo</a></li>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <li><span>No hay correo activo</span></li>
+                                                                    }
+                                                                }
+                                                            </ul>
+                                                        </div>
+
                                                     }
                                                 </div>
                                             </td>
