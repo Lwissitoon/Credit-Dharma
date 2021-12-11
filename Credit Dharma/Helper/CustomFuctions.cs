@@ -84,11 +84,11 @@ namespace Credit_Dharma.Helper
             {
                 return "C";
             }
-            else if (cuotas >= 4 || 6 <= cuotas)
+            else if (cuotas ==4||cuotas==5 ||cuotas==6)
             {
                 return "D1";
             }
-            else if (cuotas >= 7 || 9 <= cuotas)
+            else if (cuotas == 7 || cuotas == 8 || cuotas == 9)
             {
                 return "D2";
             }
