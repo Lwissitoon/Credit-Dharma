@@ -115,7 +115,7 @@ namespace Credit_Dharma.Views
 
                 if (client.PendingPayments > 3)
                 {
-                    var morosidad = (float)((client.MonthlyPay * client.PendingPayments) / (client.TotalAmount-(client.Payments*client.MonthlyPay)) )*100;
+                   
                     ViewData["Morosidad"] = JsonSerializer.Serialize(new double[] {CustomFuctions.GetMorosidad(_context.Client.ToList(),client) });
 
                     // Response.WriteAsync(JsonSerializer.Serialize(new float[] { morosidad}).ToString());
@@ -337,6 +337,10 @@ namespace Credit_Dharma.Views
             sb.Append(",");
             sb.Append("Fecha Apertura");
             sb.Append(",");
+            sb.Append("Fecha Proximo Pago");
+            sb.Append(",");
+            sb.Append("Fecha de vencimiento");
+            sb.Append(",");
             sb.Append("Saldo");
             sb.Append(",");
             sb.Append("Saldo Pendiente");
@@ -350,6 +354,8 @@ namespace Credit_Dharma.Views
             sb.Append("Cuotas Generadas");
             sb.Append(",");
             sb.Append("Calificacion");
+            sb.Append(",");
+            sb.Append("Morosidad %");
             sb.AppendLine();
             foreach (var cliente in clientes)
             {
@@ -362,6 +368,10 @@ namespace Credit_Dharma.Views
                 sb.Append(cliente.Nickname);
                 sb.Append(",");
                 sb.Append(cliente.OpeningDate);
+                sb.Append(",");
+                sb.Append(DateTime.Parse(cliente.OpeningDate).AddMonths(CustomFuctions.GetPaymentCount(DateTime.Parse(cliente.OpeningDate), DateTime.Now) + 1).ToShortDateString());
+                sb.Append(",");
+                sb.Append(DateTime.Parse(cliente.OpeningDate).AddMonths(Convert.ToInt32(cliente.TotalAmount / cliente.MonthlyPay)).ToShortDateString());
                 sb.Append(",");
                 sb.Append(cliente.TotalAmount-cliente.Amount);
                 sb.Append(",");
@@ -376,6 +386,13 @@ namespace Credit_Dharma.Views
                 sb.Append(cliente.Payments+cliente.PendingPayments);
                 sb.Append(",");
                 sb.Append(CustomFuctions.CalificarCliente( cliente.PendingPayments));
+                if (cliente.PendingPayments>3)
+                {
+
+
+                    sb.Append(",");
+                    sb.Append(CustomFuctions.GetMorosidad(clientes.ToList(), cliente));
+                }
                 sb.AppendLine();
             }
             return File(Encoding.ASCII.GetBytes(sb.ToString()), "text/csv", DateTime.Now.Date.ToString("dd-MM-yyyy")+"_clientes.csv");
