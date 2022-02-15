@@ -64,9 +64,18 @@ namespace Credit_Dharma.Controllers
         // GET: Registros/Create
         public IActionResult Create()
         {
+
             if(Session.Loggedin)
-            { 
-            return View();
+            {
+
+                ViewBag.clientes = (from cliente in _context.Client
+                                    select new SelectListItem()
+                                    {
+                                        Text = cliente.Identification,
+                                        Value = cliente.Identification
+                                    }).ToList();
+
+                return View();
         }
             else
             {

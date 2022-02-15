@@ -17,7 +17,7 @@ namespace Credit_Dharma.Controllers
     public class UsuariosController : Controller
     {
         private readonly Credit_DharmaContext _context;
-
+        public static string Message;
         public UsuariosController(Credit_DharmaContext context)
         {
             _context = context;
@@ -86,7 +86,7 @@ namespace Credit_Dharma.Controllers
         {
             if (Session.Admin)
             {
-                
+                ViewData["Mensaje"] = Message;
                 return View();
             }
             else
@@ -103,13 +103,25 @@ namespace Credit_Dharma.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserId,Username,Name,Lastname,Role,Password,Email")] Usuario usuario)
         {
-            if (ModelState.IsValid)
+            if (_context.Usuario.FirstOrDefault(x=>x.Username==usuario.Username)==null)
             {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(usuario);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(usuario);
             }
-            return View(usuario);
+            else
+            {
+                Message= "Usuario ya existe";
+                
+                return RedirectToAction("Create");
+            }
+           
         }
 
         // GET: Usuarios/Edit/5
